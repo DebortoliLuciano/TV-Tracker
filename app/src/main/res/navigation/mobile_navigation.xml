@@ -14,4 +14,9 @@
         android:name="com.example.tvtracker.ShowDetailsFragment"
         android:label="fragment_show_details"
         tools:layout="@layout/fragment_show_details" />
+    <fragment
+        android:id="@+id/watchedListFragment"
+        android:name="com.example.tvtracker.WatchedListFragment"
+        android:label="fragment_watched_list"
+        tools:layout="@layout/fragment_watched_list" />
 </navigation>
