@@ -3,20 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/nav_home">
     <fragment
-        android:id="@+id/homeFragment"
+        android:id="@+id/nav_home"
         android:name="com.example.tvtracker.Fragments.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        android:label="Home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_nav_details"
+            app:destination="@id/nav_details" />
+    </fragment>
     <fragment
-        android:id="@+id/showDetailsFragment"
+        android:id="@+id/nav_details"
         android:name="com.example.tvtracker.ShowDetailsFragment"
-        android:label="fragment_show_details"
+        android:label="Show Details"
         tools:layout="@layout/fragment_show_details" />
     <fragment
-        android:id="@+id/watchedListFragment"
+        android:id="@+id/nav_watched"
         android:name="com.example.tvtracker.WatchedListFragment"
-        android:label="fragment_watched_list"
+        android:label="Watched Shows"
         tools:layout="@layout/fragment_watched_list" />
 </navigation>
