@@ -73,10 +73,15 @@ public class DBHandler extends SQLiteOpenHelper {
     /*
      * create statements
      */
+
+    //updated with foreign key references
     public static final String CREATE_MAIN_TABLE = "CREATE TABLE " +
             TABLE_MAIN + "(" + COLUMN_MAINID + " INTEGER PRIMARY KEY,"
-            + COLUMN_SHOW + " INTEGER, " + COLUMN_GENRE + " INTEGER,"
-            + COLUMN_STATUS + " TEXT, " + COLUMN_NETWORK + " INTEGER)" ;
+            + COLUMN_SHOW + " INTEGER REFERENCES " + TABLE_SHOWS + "(" + COLUMN_SHOWID + "),"
+            + COLUMN_GENRE + " INTEGER REFERENCES " + TABLE_GENRE + "(" + COLUMN_GENREID + "),"
+            + COLUMN_STATUS + " TEXT, "
+            + COLUMN_NETWORK + " INTEGER REFERENCES " + TABLE_NETWORK +
+            "(" + COLUMN_NETWORKID +"))" ;
 
     public static final String CREATE_SHOW_TABLE = "CREATE TABLE " +
             TABLE_SHOWS + "(" + COLUMN_SHOWID + " INTEGER PRIMARY KEY,"
@@ -113,7 +118,7 @@ public class DBHandler extends SQLiteOpenHelper {
     /*
            CREATE STATEMENTS
      */
-    public void addLocation(Location location){
+    public void addShow(Location location){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME, location.getName());
