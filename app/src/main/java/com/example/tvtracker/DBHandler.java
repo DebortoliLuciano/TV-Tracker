@@ -7,8 +7,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.hikingapplication.Javabean.Location;
+import com.example.tvtracker.JavaBeans.show;
 
 import java.util.ArrayList;
+
+/**
+ * @author Saad Amjad
+ * @date 2020/03/15
+ */
 
 public class DBHandler extends SQLiteOpenHelper {
 
@@ -118,17 +124,18 @@ public class DBHandler extends SQLiteOpenHelper {
     /*
            CREATE STATEMENTS
      */
-    public void addShow(Location location){
+
+    //create show
+    public void addShow(show show){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME, location.getName());
-        values.put(COLUMN_DESCRIPTION, location.getDescription());
-        values.put(COLUMN_GEO, location.getLocation());
-        values.put(COLUMN_LONGITUDE, location.getLongitude());
-        values.put(COLUMN_LATITUDE, location.getLatitude());
-        values.put(COLUMN_TEMP, location.getTemp());
-        values.put(COLUMN_LAST_UPDATED, location.getLastUpdated());
-        db.insert(TABLE_LOCATION, null, values);
+        values.put(COLUMN_TITLE, show.getTitle());
+        values.put(COLUMN_IMDBID, show.getImdbID());
+        values.put(COLUMN_TIME, show.getTime());
+        values.put(COLUMN_DAY, show.getDay());
+        values.put(COLUMN_IMAGE, show.getCover());
+        values.put(COLUMN_SUMMARY, show.getSummary());
+        db.insert(TABLE_SHOWS, null, values);
         db.close();
     }
 
@@ -136,6 +143,7 @@ public class DBHandler extends SQLiteOpenHelper {
            READ STATEMENTS
      */
 
+    //fix zis bad boi
     public Location getLocation(int id){
         SQLiteDatabase db  = this.getReadableDatabase();
         Location location = null;
@@ -183,26 +191,28 @@ public class DBHandler extends SQLiteOpenHelper {
         Update Statements
     */
 
-    public int updateLocation(Location location){
+    //show update
+    public int updateShow(show show){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME, location.getName());
-        values.put(COLUMN_DESCRIPTION, location.getDescription());
-        values.put(COLUMN_GEO, location.getLocation());
-        values.put(COLUMN_LATITUDE, location.getLatitude());
-        values.put(COLUMN_LONGITUDE, location.getLongitude());
-        values.put(COLUMN_TEMP, location.getTemp());
-        values.put(COLUMN_LAST_UPDATED, location.getLastUpdated());
-        return db.update(TABLE_LOCATION, values, COLUMN_ID + "=?",
-                new String[]{String.valueOf(location.getId())});
+        values.put(COLUMN_TITLE, show.getTitle());
+        values.put(COLUMN_IMDBID, show.getImdbID());
+        values.put(COLUMN_TIME, show.getTime());
+        values.put(COLUMN_DAY, show.getDay());
+        values.put(COLUMN_IMAGE, show.getCover());
+        values.put(COLUMN_SUMMARY, show.getSummary());
+        return db.update(TABLE_SHOWS, values, COLUMN_SHOWID + "=?",
+                new String[]{String.valueOf(show.getId())});
     }
 
     /*
         Delete Statements
      */
-    public void deleteLocation(int location){
+
+    //delete show
+    public void deleteShow(int location){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_LOCATION, COLUMN_ID + " = ?",
+        db.delete(TABLE_SHOWS, COLUMN_SHOWID + " = ?",
                 new String[]{String.valueOf(location)});
         db.close();
     }

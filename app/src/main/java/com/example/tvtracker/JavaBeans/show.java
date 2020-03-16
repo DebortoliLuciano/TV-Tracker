@@ -1,18 +1,7 @@
 package com.example.tvtracker.JavaBeans;
 
-
-import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
-import com.example.tvtracker.R;
 
 /**
  * @author Saad Amjad
