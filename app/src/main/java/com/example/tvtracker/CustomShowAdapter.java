@@ -18,14 +18,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tvtracker.Fragments.ShowDetailsFragment;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.CustomViewHolder> {
 
-    private ArrayList<PLACEHOLDEROBJ> shows;
+    //private ArrayList<JSONObject> shows;
+    private ArrayList<Show> shows;
     private Context context;
 
-    public CustomShowAdapter(ArrayList<PLACEHOLDEROBJ> shows, Context context){
+    public CustomShowAdapter(ArrayList<Show> shows, Context context){
         this.shows=shows;
         this.context = context;
     }
@@ -41,7 +44,11 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
     public void onBindViewHolder(@NonNull final CustomViewHolder holder, int position) {
 
         final Show show = shows.get(position);
-        holder.
+
+        holder.title.setText(show.getTitle);
+        holder.summary.setText(show.getSummary);
+        holder.posterImage.setImageResource();//TODO figure out how to pull image from api
+
     }
 
     @Override
@@ -65,12 +72,23 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
             star.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //needs to be changed to query
-                    if(shows.get(getLayoutPosition()).getFavorite() == true){
-                        star.setImageResource(R.drawable.ic_star_black_24dp);
-                    }else{
-                        star.setImageResource(R.drawable.ic_star_border_black_24dp);
-                    }
+                    //add query to check if item clicked is in the watch list table
+                    //if it is then display this TODO
+                    new AlertDialog.Builder(context)
+                            .setTitle("Remove From Watch List")
+                            .setMessage("Are you sure you want to remove " + shows.get(getAdapterPosition()).getTitle() + " from your watch list?")
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //Add REMOVE Query from watch list here TODO
+                                    star.setImageResource(R.drawable.ic_star_border_black_24dp);
+                                }
+                            })
+                            .setNegativeButton("No", null)
+                            .show();
+
+                    //else add to the watch list and display a alert TODO
                 }
             });
             view.setOnClickListener(this);
@@ -88,7 +106,7 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
         public boolean onLongClick(View v){
 
             //add query to check if item clicked is in the watch list table
-            //if it is then display this
+            //if it is then display this TODO
             new AlertDialog.Builder(context)
                     .setTitle("Remove From Watch List")
                     .setMessage("Are you sure you want to remove " + shows.get(getAdapterPosition()).getTitle() + " from your watch list?")
@@ -103,7 +121,7 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
                     .setNegativeButton("No", null)
                     .show();
             //else if it is in the watched list display another version
-            //else do nothing
+            //else do nothing TODO
 
 
             return false;
