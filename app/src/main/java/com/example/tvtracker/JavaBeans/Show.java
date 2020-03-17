@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * @author Saad Amjad
  * @date 2020/03/16
  */
-public class show implements Parcelable {
+public class Show implements Parcelable {
 
     private int id;
     private String title;
@@ -18,7 +18,7 @@ public class show implements Parcelable {
     private String summary;
 
 
-    public show(String title, String imdbID, String time, String day, String cover, String summary) {
+    public Show(String title, String imdbID, String time, String day, String cover, String summary) {
         this.title = title;
         this.imdbID = imdbID;
         this.time = time;
@@ -26,8 +26,17 @@ public class show implements Parcelable {
         this.cover = cover;
         this.summary = summary;
     }
-    public show(){
+    public Show(){
 
+    }
+    public Show(int id, String title, String imdbID, String time, String day, String cover, String summary) {
+        this.id = id;
+        this.title = title;
+        this.imdbID = imdbID;
+        this.time = time;
+        this.day = day;
+        this.cover = cover;
+        this.summary = summary;
     }
 
     public int getId() {
@@ -107,7 +116,7 @@ public class show implements Parcelable {
         dest.writeString(this.summary);
     }
 
-    protected show(Parcel in) {
+    protected Show(Parcel in) {
         this.id = in.readInt();
         this.title = in.readString();
         this.imdbID = in.readString();
@@ -117,15 +126,15 @@ public class show implements Parcelable {
         this.summary = in.readString();
     }
 
-    public static final Parcelable.Creator<show> CREATOR = new Parcelable.Creator<show>() {
+    public static final Parcelable.Creator<Show> CREATOR = new Parcelable.Creator<Show>() {
         @Override
-        public show createFromParcel(Parcel source) {
-            return new show(source);
+        public Show createFromParcel(Parcel source) {
+            return new Show(source);
         }
 
         @Override
-        public show[] newArray(int size) {
-            return new show[size];
+        public Show[] newArray(int size) {
+            return new Show[size];
         }
     };
 }

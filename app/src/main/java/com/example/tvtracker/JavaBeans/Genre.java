@@ -7,17 +7,21 @@ import android.os.Parcelable;
  * @author Saad Amjad
  * @date 2020/03/16
  */
-public class genre implements Parcelable {
+public class Genre implements Parcelable {
 
     private int id;
     private String genreName;
 
 
 
-    public genre(String genreName) {
+    public Genre(String genreName) {
         this.genreName = genreName;
     }
-    public genre(){
+    public Genre(int id, String genreName) {
+        this.id = id;
+        this.genreName = genreName;
+    }
+    public Genre(){
 
     }
 
@@ -53,20 +57,20 @@ public class genre implements Parcelable {
         dest.writeString(this.genreName);
     }
 
-    protected genre(Parcel in) {
+    protected Genre(Parcel in) {
         this.id = in.readInt();
         this.genreName = in.readString();
     }
 
-    public static final Parcelable.Creator<genre> CREATOR = new Parcelable.Creator<genre>() {
+    public static final Parcelable.Creator<Genre> CREATOR = new Parcelable.Creator<Genre>() {
         @Override
-        public genre createFromParcel(Parcel source) {
-            return new genre(source);
+        public Genre createFromParcel(Parcel source) {
+            return new Genre(source);
         }
 
         @Override
-        public genre[] newArray(int size) {
-            return new genre[size];
+        public Genre[] newArray(int size) {
+            return new Genre[size];
         }
     };
 }

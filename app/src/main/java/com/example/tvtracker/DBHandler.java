@@ -6,8 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.hikingapplication.Javabean.Location;
-import com.example.tvtracker.JavaBeans.show;
+import com.example.tvtracker.JavaBeans.Genre;
+import com.example.tvtracker.JavaBeans.Network;
+import com.example.tvtracker.JavaBeans.Show;
 
 import java.util.ArrayList;
 
@@ -52,7 +53,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
 
     /*
-     * show table
+     * Show table
      */
     public static final String COLUMN_SHOWID = "id";
     public static final String COLUMN_TITLE = "title";
@@ -64,13 +65,13 @@ public class DBHandler extends SQLiteOpenHelper {
 
 
     /*
-     * network table
+     * Network table
      */
     public static final String COLUMN_NETWORKID = "id";
     public static final String COLUMN_NETWORKNAME = "network";
 
     /*
-     * genre table
+     * Genre table
      */
     public static final String COLUMN_GENREID = "id";
     public static final String COLUMN_GENRENAME = "genre";
@@ -125,8 +126,8 @@ public class DBHandler extends SQLiteOpenHelper {
            CREATE STATEMENTS
      */
 
-    //create show
-    public void addShow(show show){
+    //create Show
+    public void addShow(Show show){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_TITLE, show.getTitle());
@@ -139,60 +140,137 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    //create Genre
+    public void addGenre(Genre genre){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_GENREID, genre.getGenreName());
+        db.insert(TABLE_GENRE, null, values);
+        db.close();
+    }
+
+    //create Network
+    public void addNetwork(Network network){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NETWORKID, network.getNetworkName());
+        db.insert(TABLE_NETWORK, null, values);
+        db.close();
+    }
+
     /*
            READ STATEMENTS
      */
 
-    //fix zis bad boi
-    public Location getLocation(int id){
+    //read one show
+    public Show getShow(int id){
         SQLiteDatabase db  = this.getReadableDatabase();
-        Location location = null;
-        Cursor cursor = db.query(TABLE_LOCATION, new String[]{COLUMN_ID,
-        COLUMN_NAME, COLUMN_DESCRIPTION, COLUMN_GEO,
-        COLUMN_LATITUDE, COLUMN_LONGITUDE, COLUMN_TEMP,
-        COLUMN_LAST_UPDATED}, COLUMN_ID + "= ?",
+        Show show = null;
+        Cursor cursor = db.query(TABLE_SHOWS, new String[]{COLUMN_SHOWID,
+        COLUMN_TITLE, COLUMN_TIME, COLUMN_DAY, COLUMN_IMAGE, COLUMN_SUMMARY}, COLUMN_SHOWID + "= ?",
         new String[]{String.valueOf(id)}, null, null, null);
         if(cursor.moveToFirst()){
-            location = new Location(
+            show = new Show(
                     cursor.getInt(0),
                     cursor.getString(1),
                     cursor.getString(2),
                     cursor.getString(3),
-                    cursor.getDouble(4),
-                    cursor.getDouble(5),
-                    cursor.getDouble(6),
-                    cursor.getLong(7));
+                    cursor.getString(4),
+                    cursor.getString(5),
+                    cursor.getString(6));
         }
         db.close();
-        return location;
+        return show;
     }
 
-    public ArrayList<Location> getAllLocations(){
+    //read all shows
+    public ArrayList<Show> getAllShows(){
        SQLiteDatabase db  = this.getReadableDatabase();
-       Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_LOCATION ,
+       Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SHOWS ,
                 null);
-       ArrayList<Location> locations = new ArrayList<>();
+       ArrayList<Show> shows = new ArrayList<>();
        while(cursor.moveToNext()) {
-           locations.add(new Location(
+           shows.add(new Show(
                    cursor.getInt(0),
                    cursor.getString(1),
                    cursor.getString(2),
                    cursor.getString(3),
-                   cursor.getDouble(4),
-                   cursor.getDouble(5),
-                   cursor.getDouble(6),
-                   cursor.getLong(7)));
+                   cursor.getString(4),
+                   cursor.getString(5),
+                   cursor.getString(6)));
        }
        db.close();
-       return locations;
+       return shows;
+    }
+
+    //read one genre
+    public Genre getGenre(int id){
+        SQLiteDatabase db  = this.getReadableDatabase();
+        Genre genre = null;
+        Cursor cursor = db.query(TABLE_GENRE, new String[]{COLUMN_GENREID,
+                        COLUMN_GENRENAME}, COLUMN_GENREID + "= ?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if(cursor.moveToFirst()){
+            genre = new Genre(
+                    cursor.getInt(0),
+                    cursor.getString(1));
+        }
+        db.close();
+        return genre;
+    }
+
+    //read all genres
+    public ArrayList<Genre> getAllGenre(){
+        SQLiteDatabase db  = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_GENRE ,
+                null);
+        ArrayList<Genre> genre = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            genre.add(new Genre(
+                    cursor.getInt(0),
+                    cursor.getString(1)));
+        }
+        db.close();
+        return genre;
+    }
+
+    //read one network
+    public Network getNetwork(int id){
+        SQLiteDatabase db  = this.getReadableDatabase();
+        Network network = null;
+        Cursor cursor = db.query(TABLE_NETWORK, new String[]{COLUMN_NETWORKID,
+                        COLUMN_NETWORKNAME}, COLUMN_NETWORKID + "= ?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if(cursor.moveToFirst()){
+            network = new Network(
+                    cursor.getInt(0),
+                    cursor.getString(1));
+        }
+        db.close();
+        return network;
+    }
+
+    //read all networks
+    public ArrayList<Network> getAllNetwork(){
+        SQLiteDatabase db  = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NETWORK ,
+                null);
+        ArrayList<Network> networks = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            networks.add(new Network(
+                    cursor.getInt(0),
+                    cursor.getString(1)));
+        }
+        db.close();
+        return networks;
     }
 
     /*
         Update Statements
     */
 
-    //show update
-    public int updateShow(show show){
+    //Show update
+    public int updateShow(Show show){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_TITLE, show.getTitle());
@@ -209,11 +287,13 @@ public class DBHandler extends SQLiteOpenHelper {
         Delete Statements
      */
 
-    //delete show
-    public void deleteShow(int location){
+    //delete Show (in both main and Show table)
+    public void deleteShow(int show){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_SHOWS, COLUMN_SHOWID + " = ?",
-                new String[]{String.valueOf(location)});
+                new String[]{String.valueOf(show)});
+        db.delete(TABLE_MAIN, COLUMN_SHOW + " = ?",
+                new String[]{String.valueOf(show)});
         db.close();
     }
 

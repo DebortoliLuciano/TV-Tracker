@@ -7,17 +7,21 @@ import android.os.Parcelable;
  * @author Saad Amjad
  * @date 2020/03/16
  */
-public class network implements Parcelable {
+public class Network implements Parcelable {
 
     private int id;
     private String networkName;
 
 
 
-    public network(String networkName) {
+    public Network(String networkName) {
         this.networkName = networkName;
     }
-    public network(){
+    public Network(int id, String networkName) {
+        this.id = id;
+        this.networkName = networkName;
+    }
+    public Network(){
 
     }
 
@@ -53,20 +57,20 @@ public class network implements Parcelable {
         dest.writeString(this.networkName);
     }
 
-    protected network(Parcel in) {
+    protected Network(Parcel in) {
         this.id = in.readInt();
         this.networkName = in.readString();
     }
 
-    public static final Parcelable.Creator<network> CREATOR = new Parcelable.Creator<network>() {
+    public static final Parcelable.Creator<Network> CREATOR = new Parcelable.Creator<Network>() {
         @Override
-        public network createFromParcel(Parcel source) {
-            return new network(source);
+        public Network createFromParcel(Parcel source) {
+            return new Network(source);
         }
 
         @Override
-        public network[] newArray(int size) {
-            return new network[size];
+        public Network[] newArray(int size) {
+            return new Network[size];
         }
     };
 }
