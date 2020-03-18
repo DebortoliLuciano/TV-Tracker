@@ -2,4 +2,35 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation" />
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/nav_home">
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.tvtracker.Fragments.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_nav_details"
+            app:destination="@id/nav_details" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_details"
+        android:name="com.example.tvtracker.Fragments.ShowDetailsFragment"
+        android:label="Show Details"
+        tools:layout="@layout/fragment_show_details" />
+    <fragment
+        android:id="@+id/nav_watched"
+        android:name="com.example.tvtracker.Fragments.WatchedListFragment"
+        android:label="Watched Shows"
+        tools:layout="@layout/fragment_watched_list" />
+    <fragment
+        android:id="@+id/nav_watch"
+        android:name="com.example.tvtracker.Fragments.watchListFragment"
+        android:label="Watch List"
+        tools:layout="@layout/fragment_watch_list" />
+    <fragment
+        android:id="@+id/nav_contact"
+        android:name="com.example.tvtracker.Fragments.contactFragment"
+        android:label="About Us"
+        tools:layout="@layout/fragment_contact" />
+</navigation>

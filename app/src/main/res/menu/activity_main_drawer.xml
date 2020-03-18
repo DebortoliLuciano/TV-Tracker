@@ -5,12 +5,21 @@
 
     <group android:checkableBehavior="single">
 
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_search_black_24dp"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/nav_watched"
+            android:icon="@drawable/ic_playlist_add_check_black_24dp"
+            android:title="Watched Shows" />
+        <item
+            android:id="@+id/nav_watch"
+            android:icon="@drawable/ic_watch_later_black_24dp"
+            android:title="Watch List" />
+        <item
+            android:id="@+id/nav_contact"
+            android:icon="@drawable/ic_contact_phone_black_24dp"
+            android:title="About US" />
     </group>
-
-    <item android:title="Communicate">
-        <menu>
-
-        </menu>
-    </item>
-
 </menu>
