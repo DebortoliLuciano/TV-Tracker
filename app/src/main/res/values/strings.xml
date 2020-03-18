@@ -4,7 +4,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">TV Tracker</string>
     <string name="nav_header_subtitle">By: LuSa</string>
-<!--    abbreviation for our names (probably will change later) -->
+    <!--    abbreviation for our names (probably will change later) -->
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
