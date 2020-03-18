@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.tvtracker.JavaBeans.Genre;
+import com.example.tvtracker.JavaBeans.MainRow;
 import com.example.tvtracker.JavaBeans.Network;
 import com.example.tvtracker.JavaBeans.Show;
 
@@ -126,7 +127,7 @@ public class DBHandler extends SQLiteOpenHelper {
            CREATE STATEMENTS
      */
 
-    //create Show
+    //create Show record
     public void addShow(Show show){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -140,21 +141,33 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    //create Genre
+    //create Genre record
     public void addGenre(Genre genre){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_GENREID, genre.getGenreName());
+        values.put(COLUMN_GENRENAME, genre.getGenreName());
         db.insert(TABLE_GENRE, null, values);
         db.close();
     }
 
-    //create Network
+    //create Network record
     public void addNetwork(Network network){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_NETWORKID, network.getNetworkName());
+        values.put(COLUMN_NETWORKNAME, network.getNetworkName());
         db.insert(TABLE_NETWORK, null, values);
+        db.close();
+    }
+
+    //create main table record
+    public void addMainRow(MainRow mainRow){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SHOW, mainRow.getShow());
+        values.put(COLUMN_GENRE, mainRow.getGenre());
+        values.put(COLUMN_STATUS, mainRow.getStatus());
+        values.put(COLUMN_NETWORK, mainRow.getNetwork());
+        db.insert(TABLE_MAIN, null, values);
         db.close();
     }
 
@@ -265,6 +278,43 @@ public class DBHandler extends SQLiteOpenHelper {
         return networks;
     }
 
+    //read one row from main table
+    public MainRow getMainRow(int id){
+        SQLiteDatabase db  = this.getReadableDatabase();
+        MainRow mainRow = null;
+        Cursor cursor = db.query(TABLE_MAIN, new String[]{COLUMN_MAINID,
+                        COLUMN_SHOW, COLUMN_GENRE, COLUMN_STATUS, COLUMN_NETWORK}, COLUMN_MAINID + "= ?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if(cursor.moveToFirst()){
+            mainRow = new MainRow(
+                    cursor.getInt(0),
+                    cursor.getInt(1),
+                    cursor.getInt(2),
+                    cursor.getString(3),
+                    cursor.getInt(4));
+        }
+        db.close();
+        return mainRow;
+    }
+
+    //read one row from main table
+    public ArrayList<MainRow> getMainRows(){
+        SQLiteDatabase db  = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SHOWS ,
+                null);
+        ArrayList<MainRow> mainRows = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            mainRows.add(new MainRow(
+                    cursor.getInt(0),
+                    cursor.getInt(1),
+                    cursor.getInt(2),
+                    cursor.getString(3),
+                    cursor.getInt(4)));
+        }
+        db.close();
+        return mainRows;
+    }
+
     /*
         Update Statements
     */
@@ -283,6 +333,36 @@ public class DBHandler extends SQLiteOpenHelper {
                 new String[]{String.valueOf(show.getId())});
     }
 
+    //genre update
+    public int updateGenre(Genre genre){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_GENRENAME, genre.getGenreName());
+        return db.update(TABLE_GENRE, values, COLUMN_GENREID + "=?",
+                new String[]{String.valueOf(genre.getId())});
+    }
+
+    //network update
+    public int updateNetwork(Network network){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NETWORKNAME, network.getNetworkName());
+        return db.update(TABLE_NETWORK, values, COLUMN_NETWORKID + "=?",
+                new String[]{String.valueOf(network.getId())});
+    }
+
+    //main table update
+    public int updateMainRow(MainRow mainRow){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SHOW, mainRow.getShow());
+        values.put(COLUMN_GENRE, mainRow.getGenre());
+        values.put(COLUMN_STATUS, mainRow.getStatus());
+        values.put(COLUMN_NETWORK, mainRow.getNetwork());
+        return db.update(TABLE_MAIN, values, COLUMN_MAINID + "=?",
+                new String[]{String.valueOf(mainRow.getId())});
+    }
+
     /*
         Delete Statements
      */
@@ -297,4 +377,13 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    //delete main row
+    public void deleteMain(int mainRow){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_MAIN, COLUMN_SHOW + " = ?",
+                new String[]{String.valueOf(mainRow)});
+        db.close();
+    }
+
+    //other tables don't need deletes for now, may change later
 }

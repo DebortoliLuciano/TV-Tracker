@@ -5,19 +5,11 @@ import android.os.Parcelable;
 
 public class MainRow implements Parcelable {
 
-//    public static final String COLUMN_MAINID = "id";
-//    public static final String COLUMN_SHOW = "show";
-//    public static final String COLUMN_GENRE = "genre";
-//    public static final String COLUMN_STATUS = "status";
-//    public static final String COLUMN_NETWORK = "network";
-
     private int id;
     private int show;
     private int genre;
     private String status;
     private int network;
-
-
 
     public MainRow(int show, int genre, String status, int network) {
         this.show = show;
@@ -89,24 +81,29 @@ public class MainRow implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.id);
-        dest.writeInt(this.); //HERE CONTINUE FROM HERE
-        dest.writeString(this.genreName);
+        dest.writeInt(this.show);
+        dest.writeInt(this.genre);
+        dest.writeString(this.status);
+        dest.writeInt(this.network);
     }
 
-    protected Genre(Parcel in) {
+    protected MainRow(Parcel in) {
         this.id = in.readInt();
-        this.genreName = in.readString();
+        this.show = in.readInt();
+        this.genre = in.readInt();
+        this.status = in.readString();
+        this.network = in.readInt();
     }
 
-    public static final Parcelable.Creator<Genre> CREATOR = new Parcelable.Creator<Genre>() {
+    public static final Parcelable.Creator<MainRow> CREATOR = new Parcelable.Creator<MainRow>() {
         @Override
-        public Genre createFromParcel(Parcel source) {
-            return new Genre(source);
+        public MainRow createFromParcel(Parcel source) {
+            return new MainRow(source);
         }
 
         @Override
-        public Genre[] newArray(int size) {
-            return new Genre[size];
+        public MainRow[] newArray(int size) {
+            return new MainRow[size];
         }
     };
 }
