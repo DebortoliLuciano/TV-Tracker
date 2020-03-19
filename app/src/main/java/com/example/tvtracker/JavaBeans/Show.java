@@ -16,20 +16,22 @@ public class Show implements Parcelable {
     private String day;
     private String cover; //image
     private String summary;
+    private String watched;
 
 
-    public Show(String title, String imdbID, String time, String day, String cover, String summary) {
+    public Show(String title, String imdbID, String time, String day, String cover, String summary, String watched) {
         this.title = title;
         this.imdbID = imdbID;
         this.time = time;
         this.day = day;
         this.cover = cover;
         this.summary = summary;
+        this.watched = watched;
     }
     public Show(){
 
     }
-    public Show(int id, String title, String imdbID, String time, String day, String cover, String summary) {
+    public Show(int id, String title, String imdbID, String time, String day, String cover, String summary, String watched) {
         this.id = id;
         this.title = title;
         this.imdbID = imdbID;
@@ -37,6 +39,7 @@ public class Show implements Parcelable {
         this.day = day;
         this.cover = cover;
         this.summary = summary;
+        this.watched = watched;
     }
 
     public int getId() {
@@ -95,6 +98,14 @@ public class Show implements Parcelable {
         this.summary = summary;
     }
 
+    public String getWatched() {
+        return watched;
+    }
+
+    public void setWatched(String watched) {
+        this.watched = watched;
+    }
+
     @Override
     public String toString() {
         return this.title;
@@ -114,6 +125,7 @@ public class Show implements Parcelable {
         dest.writeString(this.day);
         dest.writeString(this.cover);
         dest.writeString(this.summary);
+        dest.writeString(this.watched);
     }
 
     protected Show(Parcel in) {
@@ -124,6 +136,7 @@ public class Show implements Parcelable {
         this.day = in.readString();
         this.cover = in.readString();
         this.summary = in.readString();
+        this.watched = in.readString();
     }
 
     public static final Parcelable.Creator<Show> CREATOR = new Parcelable.Creator<Show>() {
