@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.tvtracker.CustomShowAdapter;
+import com.example.tvtracker.JavaBeans.Show;
 import com.example.tvtracker.R;
 
 import org.json.JSONArray;
@@ -47,13 +48,18 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        //get context
         final Context context = this.getContext();
 
-        final ArrayList<Show> shows = new ArrayList<Show>();
+        //create an array list of shows
+        final ArrayList<Show> shows = new ArrayList<>();
+        //create the custom adapter
         final CustomShowAdapter adapter = new CustomShowAdapter(shows, context);
+        //find the recycler view and set the adapter
         RecyclerView recyclerView = view.findViewById(R.id.showList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
 
 
         ImageView searchButton = view.findViewById(R.id.searchImage);
@@ -66,6 +72,7 @@ public class HomeFragment extends Fragment {
                 shows.clear();
                 RequestQueue queue = Volley.newRequestQueue(context);
                 String url = "http://api.tvmaze.com/search/shows?q=" + searchBar.getText().toString();
+                System.out.println(url);
                 JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                         new Response.Listener<JSONObject>() {
                             @Override
@@ -75,7 +82,7 @@ public class HomeFragment extends Fragment {
                                     for (int i = 0; i < array.length(); i++) {
                                         JSONObject show = array.optJSONObject(i);
                                         if (show != null) {
-                                            shows.add(new Show(show.getString("name")));//TODO add constuctor
+                                            shows.add(new Show(show.getString("name"), show.getString("imdb"), show.getString("time"), "Saturday", "test", show.getString("summary")));//TODO add constuctor
                                         }
                                     }
                                     adapter.notifyDataSetChanged();

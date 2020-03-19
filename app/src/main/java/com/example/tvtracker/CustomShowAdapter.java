@@ -18,6 +18,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tvtracker.Fragments.ShowDetailsFragment;
+import com.example.tvtracker.JavaBeans.Show;
 
 import org.json.JSONObject;
 
@@ -47,9 +48,13 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
 
         final Show show = shows.get(position);
 
-        holder.title.setText(show.getTitle);
-        holder.summary.setText(show.getSummary);
-        holder.posterImage.setImageBitmap(BitmapFactory.decodeStream(new URL(show.getUrl()).openConnection().getInputStream()));//TODO figure out how to pull image from api
+        holder.title.setText(show.getTitle());
+        holder.summary.setText(show.getSummary());
+//        try {
+//            holder.posterImage.setImageBitmap(BitmapFactory.decodeStream(new URL(show.getCover()).openConnection().getInputStream()));//TODO figure out how to pull image from api
+//        } catch(Exception e){
+//            holder.posterImage.setImageResource(R.drawable.ic_launcher_foreground);
+//        }
 
 
     }
@@ -91,6 +96,7 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
                             .setNegativeButton("No", null)
                             .show();
 
+                    
                     //else add to the watch list and display a alert TODO
                 }
             });
