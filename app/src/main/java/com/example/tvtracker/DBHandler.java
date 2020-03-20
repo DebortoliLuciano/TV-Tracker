@@ -16,6 +16,8 @@ import java.util.ArrayList;
 /**
  * @author Saad Amjad
  * @date 2020/03/15
+ * @author2 Luciano DeBortoli
+ * @dateEdited 2020/03/19
  */
 
 public class DBHandler extends SQLiteOpenHelper {
@@ -63,6 +65,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_DAY = "weekly_release_day";
     public static final String COLUMN_IMAGE = "image";
     public static final String COLUMN_SUMMARY = "summary";
+    public static final String COLUMN_WATCHED = "watched";
 
 
     /*
@@ -95,7 +98,7 @@ public class DBHandler extends SQLiteOpenHelper {
             TABLE_SHOWS + "(" + COLUMN_SHOWID + " INTEGER PRIMARY KEY,"
             + COLUMN_TITLE + " TEXT, " + COLUMN_IMDBID + " INTEGER,"
             + COLUMN_TIME + " TEXT, " + COLUMN_DAY + " TEXT, " + COLUMN_IMAGE
-            + " TEXT, " + COLUMN_SUMMARY + " TEXT)" ;
+            + " TEXT, " + COLUMN_SUMMARY + " TEXT, " + COLUMN_WATCHED + " TEXT)" ;
 
     public static final String CREATE_NETWORK_TABLE = "CREATE TABLE " +
             TABLE_NETWORK + "(" + COLUMN_NETWORKID + " INTEGER PRIMARY KEY,"
@@ -137,6 +140,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_DAY, show.getDay());
         values.put(COLUMN_IMAGE, show.getCover());
         values.put(COLUMN_SUMMARY, show.getSummary());
+        values.put(COLUMN_WATCHED, show.getWatched());
         db.insert(TABLE_SHOWS, null, values);
         db.close();
     }
@@ -180,7 +184,7 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db  = this.getReadableDatabase();
         Show show = null;
         Cursor cursor = db.query(TABLE_SHOWS, new String[]{COLUMN_SHOWID,
-        COLUMN_TITLE, COLUMN_TIME, COLUMN_DAY, COLUMN_IMAGE, COLUMN_SUMMARY}, COLUMN_SHOWID + "= ?",
+        COLUMN_TITLE, COLUMN_TIME, COLUMN_DAY, COLUMN_IMAGE, COLUMN_SUMMARY, COLUMN_WATCHED}, COLUMN_SHOWID + "= ?",
         new String[]{String.valueOf(id)}, null, null, null);
         if(cursor.moveToFirst()){
             show = new Show(
@@ -190,10 +194,33 @@ public class DBHandler extends SQLiteOpenHelper {
                     cursor.getString(3),
                     cursor.getString(4),
                     cursor.getString(5),
-                    cursor.getString(6));
+                    cursor.getString(6),
+                    cursor.getString(7));
         }
         db.close();
         return show;
+    }
+
+    //read shows by watched
+    public ArrayList<Show> getWatchedShows(String watched){
+        SQLiteDatabase db  = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_SHOWS, new String[]{COLUMN_SHOWID,
+                        COLUMN_TITLE, COLUMN_TIME, COLUMN_DAY, COLUMN_IMAGE, COLUMN_SUMMARY, COLUMN_WATCHED}, COLUMN_WATCHED + "= ?",
+                new String[]{String.valueOf(watched)}, null, null, null);
+        ArrayList<Show> shows = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            shows.add(new Show(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4),
+                    cursor.getString(5),
+                    cursor.getString(6),
+                    cursor.getString(7)));
+        }
+        db.close();
+        return shows;
     }
 
     //read all shows
@@ -210,7 +237,8 @@ public class DBHandler extends SQLiteOpenHelper {
                    cursor.getString(3),
                    cursor.getString(4),
                    cursor.getString(5),
-                   cursor.getString(6)));
+                   cursor.getString(6),
+                   cursor.getString(7)));
        }
        db.close();
        return shows;
@@ -329,6 +357,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_DAY, show.getDay());
         values.put(COLUMN_IMAGE, show.getCover());
         values.put(COLUMN_SUMMARY, show.getSummary());
+        values.put(COLUMN_WATCHED, show.getWatched());
         return db.update(TABLE_SHOWS, values, COLUMN_SHOWID + "=?",
                 new String[]{String.valueOf(show.getId())});
     }
