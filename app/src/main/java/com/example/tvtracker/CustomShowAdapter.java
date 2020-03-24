@@ -106,7 +106,7 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
         @Override
         public void onClick(View v){
             Bundle extra = new Bundle();
-            extra.putParcelable(ShowDetailsFragment.SHOW, shows.get(getAdapterPosition()));
+            //extra.putParcelable(ShowDetailsFragment.SHOW, shows.get(getAdapterPosition()));
 
             Navigation.findNavController(v).navigate(R.id.showDetails, extra);
         }

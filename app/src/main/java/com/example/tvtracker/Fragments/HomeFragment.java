@@ -18,6 +18,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.tvtracker.CustomShowAdapter;
@@ -51,10 +52,14 @@ public class HomeFragment extends Fragment {
         //get context
         final Context context = this.getContext();
 
+        //create days string variable
+
+
         //create an array list of shows
         final ArrayList<Show> shows = new ArrayList<>();
         //create the custom adapter
         final CustomShowAdapter adapter = new CustomShowAdapter(shows, context);
+        shows.add(new Show("test", "test", "test", "test", "test", "test"));
         //find the recycler view and set the adapter
         RecyclerView recyclerView = view.findViewById(R.id.showList);
         recyclerView.setAdapter(adapter);
@@ -69,31 +74,59 @@ public class HomeFragment extends Fragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 shows.clear();
                 RequestQueue queue = Volley.newRequestQueue(context);
-                String url = "http://api.tvmaze.com/search/shows?q=" + searchBar.getText().toString();
+                String url = "https://api.tvmaze.com/search/shows?q=" + searchBar.getText().toString();
                 System.out.println(url);
-                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                        new Response.Listener<JSONObject>() {
+
+
+
+                //requst jsonArray named response
+                JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONArray>() {
                             @Override
-                            public void onResponse(JSONObject response) {
-                                try {
-                                    JSONArray array = new JSONArray(response);
-                                    for (int i = 0; i < array.length(); i++) {
-                                        JSONObject show = array.optJSONObject(i);
-                                        if (show != null) {
-                                            shows.add(new Show(show.getString("name"), show.getString("imdb"), show.getString("time"), "Saturday", "test", show.getString("summary")));//TODO add constuctor
+                            public void onResponse(JSONArray response) {
+
+//                                try{
+//                                    JSONObject object = response.getJSONObject("show");
+//                                    shows.add(new Show(object.getString("title"), "test", "test", "test", "test", "test"));
+//                                }catch(Exception e){
+//                                    e.printStackTrace();
+//                                }
+
+                                String days="";
+
+                                //loop through json array
+                                    for (int i = 0; i < response.length(); i++) {
+                                //assign the current object from array to JsonObject named show
+                                        try {
+                                            JSONObject showObject = response.getJSONObject(i);
+                                            if (showObject != null) {
+                                                JSONObject show = showObject.getJSONObject("show");
+//                                                for(int x = 0; x < show.getJSONArray("days").length(); x++){
+//                                                    days += show.getJSONArray("days").getString(x) + " ";
+//                                                }
+
+                                                shows.add(new Show(show.getString("name"), show.getJSONObject("externals").getString("imdb"), show.getJSONObject("schedule").getString("time"), days, show.getJSONObject("image").getString("medium"), show.getString("summary")));
+
+                                            }
+                                        }catch (JSONException e){
+
                                         }
+
+                                        //if the show is not null then add to shows arrayList
+
+
                                     }
+
                                     adapter.notifyDataSetChanged();
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                                System.out.println(shows);
                             }
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        error.printStackTrace();
                     }
                 });
                 queue.add(request);
