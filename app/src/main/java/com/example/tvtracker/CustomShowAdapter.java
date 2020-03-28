@@ -50,18 +50,14 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
 
         holder.title.setText(show.getTitle());
         holder.summary.setText(show.getSummary());
-//        try {
-//            holder.posterImage.setImageBitmap(BitmapFactory.decodeStream(new URL(show.getCover()).openConnection().getInputStream()));//TODO figure out how to pull image from api
-//        } catch(Exception e){
-//            holder.posterImage.setImageResource(R.drawable.ic_launcher_foreground);
-//        }
-
+        holder.posterImage.setImageResource(R.drawable.ic_menu_camera);
+        //TODO implement Picasso
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return shows.size();
     }
 
     class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
