@@ -42,6 +42,8 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public CustomShowAdapter adapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,8 +60,9 @@ public class HomeFragment extends Fragment {
         //create an array list of shows
         final ArrayList<Show> shows = new ArrayList<>();
         //create the custom adapter
-        final CustomShowAdapter adapter = new CustomShowAdapter(shows, context);
-        shows.add(new Show("test", "test", "test", "test", "test", "test"));
+        //shows.add(new Show("test", "test", "test", "test", "test", "test"));
+        adapter = new CustomShowAdapter(shows, context);
+
         //find the recycler view and set the adapter
         RecyclerView recyclerView = view.findViewById(R.id.showList);
         recyclerView.setAdapter(adapter);
@@ -82,6 +85,7 @@ public class HomeFragment extends Fragment {
 
 
 
+                //TODO pull down genre table
                 //requst jsonArray named response
                 JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                         new Response.Listener<JSONArray>() {
@@ -104,23 +108,38 @@ public class HomeFragment extends Fragment {
                                             JSONObject showObject = response.getJSONObject(i);
                                             if (showObject != null) {
                                                 JSONObject show = showObject.getJSONObject("show");
-//                                                for(int x = 0; x < show.getJSONArray("days").length(); x++){
-//                                                    days += show.getJSONArray("days").getString(x) + " ";
-//                                                }
+                                                JSONObject schedule = show.getJSONObject("schedule");
 
-                                                shows.add(new Show(show.getString("name"), show.getJSONObject("externals").getString("imdb"), show.getJSONObject("schedule").getString("time"), days, show.getJSONObject("image").getString("medium"), show.getString("summary")));
+
+                                                for(int x = 0; x < schedule.getJSONArray("days").length(); x++){
+
+                                                    days += schedule.getJSONArray("days").getString(x) + " ";
+                                                }
+
+                                                for(int y = 0; y < show.getJSONArray("genres").length(); y++){
+                                                    //TODO check if genre is in table
+                                                    //TODO if not add to table
+                                                }
+
+                                                String summary = android.text.Html.fromHtml(show.getString("summary")).toString();
+
+
+                                                shows.add(new Show(show.getString("name"), show.getJSONObject("externals").getString("imdb"), show.getJSONObject("schedule").getString("time"), days, show.getJSONObject("image").getString("medium"), summary));
 
                                             }
                                         }catch (JSONException e){
-
+                                            e.printStackTrace();
                                         }
 
-                                        //if the show is not null then add to shows arrayList
+
+
 
 
                                     }
 
                                     adapter.notifyDataSetChanged();
+
+
                                 System.out.println(shows);
                             }
                         }, new Response.ErrorListener() {
