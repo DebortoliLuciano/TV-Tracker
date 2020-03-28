@@ -31,7 +31,7 @@
         app:layout_constraintBottom_toTopOf="@+id/favoriteButton"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
         app:layout_constraintStart_toStartOf="@+id/cardView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintTop_toBottomOf="@+id/posterImage" />
 
     <ImageView
         android:id="@+id/favoriteStar"
@@ -52,11 +52,11 @@
         android:elevation="2dp"
         android:text="Producer and Other Info"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintStart_toEndOf="@+id/posterImage"
         app:layout_constraintTop_toBottomOf="@+id/titleText" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/posterImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -76,7 +76,7 @@
         android:elevation="2dp"
         android:text="Title"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintStart_toEndOf="@+id/posterImage"
         app:layout_constraintTop_toTopOf="@+id/cardView" />
 
     <androidx.cardview.widget.CardView

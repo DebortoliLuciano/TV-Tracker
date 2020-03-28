@@ -10,7 +10,7 @@
         android:label="Home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_nav_home_to_nav_details"
+            android:id="@+id/showDetails"
             app:destination="@id/nav_details" />
     </fragment>
     <fragment
