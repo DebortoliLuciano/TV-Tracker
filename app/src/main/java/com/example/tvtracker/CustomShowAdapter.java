@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tvtracker.Fragments.ShowDetailsFragment;
 import com.example.tvtracker.JavaBeans.Show;
+import com.squareup.picasso.Picasso;
+
 
 import org.json.JSONObject;
 
@@ -50,8 +53,10 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
 
         holder.title.setText(show.getTitle());
         holder.summary.setText(show.getSummary());
-        holder.posterImage.setImageResource(R.drawable.ic_menu_camera);
-        //TODO implement Picasso
+
+
+        Picasso.get().load(show.getCover()).fit().centerCrop().placeholder(R.drawable.ic_menu_camera).error(R.drawable.ic_contact_phone_black_24dp).into(holder.posterImage);
+
 
     }
 
