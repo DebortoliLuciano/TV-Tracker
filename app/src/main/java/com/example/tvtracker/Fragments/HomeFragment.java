@@ -140,6 +140,7 @@ public class HomeFragment extends Fragment {
                                                 String summary = android.text.Html.fromHtml(show.getString("summary")).toString();
 
 
+
                                                 shows.add(new Show(show.getString("name"), show.getJSONObject("externals").getString("imdb"), show.getJSONObject("schedule").getString("time"), days, show.getJSONObject("image").getString("medium"), summary, "false"));
 
                                                 JSONObject network = show.getJSONObject("network");
