@@ -34,8 +34,8 @@
 
     <ImageView
         android:id="@+id/posterImage"
-        android:layout_width="210px"
-        android:layout_height="295px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"

@@ -55,7 +55,7 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
         holder.summary.setText(show.getSummary());
 
 
-        Picasso.get().load(show.getCover()).fit().centerCrop().placeholder(R.drawable.ic_menu_camera).error(R.drawable.ic_contact_phone_black_24dp).into(holder.posterImage);
+        Picasso.get().load(show.getCover()).resize(210, 295).centerCrop().placeholder(R.drawable.ic_menu_camera).error(R.drawable.ic_contact_phone_black_24dp).into(holder.posterImage);
 
 
     }
