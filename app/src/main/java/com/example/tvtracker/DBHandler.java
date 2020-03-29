@@ -260,6 +260,22 @@ public class DBHandler extends SQLiteOpenHelper {
         return genre;
     }
 
+    //read one genres by name
+    public Genre getGenrebyName(String name){
+        SQLiteDatabase db  = this.getReadableDatabase();
+        Genre genre = null;
+        Cursor cursor = db.query(TABLE_GENRE, new String[]{COLUMN_GENREID,
+                        COLUMN_GENRENAME}, COLUMN_GENRENAME + "= ?",
+                new String[]{String.valueOf(name)}, null, null, null);
+        if(cursor.moveToFirst()){
+            genre = new Genre(
+                    cursor.getInt(0),
+                    cursor.getString(1));
+        }
+        db.close();
+        return genre;
+    }
+
     //read all genres
     public ArrayList<Genre> getAllGenre(){
         SQLiteDatabase db  = this.getReadableDatabase();
@@ -282,6 +298,22 @@ public class DBHandler extends SQLiteOpenHelper {
         Cursor cursor = db.query(TABLE_NETWORK, new String[]{COLUMN_NETWORKID,
                         COLUMN_NETWORKNAME}, COLUMN_NETWORKID + "= ?",
                 new String[]{String.valueOf(id)}, null, null, null);
+        if(cursor.moveToFirst()){
+            network = new Network(
+                    cursor.getInt(0),
+                    cursor.getString(1));
+        }
+        db.close();
+        return network;
+    }
+
+    //read one network by name
+    public Network getNetworkByName(String name){
+        SQLiteDatabase db  = this.getReadableDatabase();
+        Network network = null;
+        Cursor cursor = db.query(TABLE_NETWORK, new String[]{COLUMN_NETWORKID,
+                        COLUMN_NETWORKNAME}, COLUMN_NETWORKID + "= ?",
+                new String[]{String.valueOf(name)}, null, null, null);
         if(cursor.moveToFirst()){
             network = new Network(
                     cursor.getInt(0),

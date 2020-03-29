@@ -22,6 +22,9 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.tvtracker.CustomShowAdapter;
+import com.example.tvtracker.DBHandler;
+import com.example.tvtracker.JavaBeans.Genre;
+import com.example.tvtracker.JavaBeans.Network;
 import com.example.tvtracker.JavaBeans.Show;
 import com.example.tvtracker.R;
 
@@ -43,6 +46,7 @@ public class HomeFragment extends Fragment {
     }
 
     public CustomShowAdapter adapter;
+
 
 
     @Override
@@ -82,7 +86,9 @@ public class HomeFragment extends Fragment {
                 RequestQueue queue = Volley.newRequestQueue(context);
                 String url = "https://api.tvmaze.com/search/shows?q=" + searchBar.getText().toString();
                 System.out.println(url);
-
+                final DBHandler db = new DBHandler(context);
+                ArrayList<Genre> genres = db.getAllGenre();
+                ArrayList<Network> networks = db.getAllNetwork();
 
 
                 //TODO pull down genre table
@@ -111,21 +117,37 @@ public class HomeFragment extends Fragment {
                                                 JSONObject schedule = show.getJSONObject("schedule");
 
 
+
                                                 for(int x = 0; x < schedule.getJSONArray("days").length(); x++){
 
                                                     days += schedule.getJSONArray("days").getString(x) + " ";
                                                 }
 
+                                                //for every genre in the show
                                                 for(int y = 0; y < show.getJSONArray("genres").length(); y++){
-                                                    //TODO check if genre is in table
-                                                    //TODO if not add to table
+                                                    //check to see if there is already a genre with the same name
+                                                    Genre existingGenre = db.getGenrebyName(show.getJSONArray("genres").getString(y));
+                                                    if(existingGenre == null){
+                                                        //if there is not then add it to the database
+                                                        Genre genre = new Genre(show.getJSONArray("genres").getString(y));
+                                                        db.addGenre(genre);
+                                                    }
                                                 }
+
+                                                //check if there exists the network already within the database
+
 
                                                 String summary = android.text.Html.fromHtml(show.getString("summary")).toString();
 
 
-                                                shows.add(new Show(show.getString("name"), show.getJSONObject("externals").getString("imdb"), show.getJSONObject("schedule").getString("time"), days, show.getJSONObject("image").getString("medium"), summary));
+                                                shows.add(new Show(show.getString("name"), show.getJSONObject("externals").getString("imdb"), show.getJSONObject("schedule").getString("time"), days, show.getJSONObject("image").getString("medium"), summary, "false"));
 
+                                                JSONObject network = show.getJSONObject("network");
+                                                Network existingNetwork =  db.getNetworkByName(network.getString("name"));
+                                                if(existingNetwork == null){
+                                                    Network networkToBeAdded = new Network(network.getString("name"));
+                                                    db.addNetwork(networkToBeAdded);
+                                                }
                                             }
                                         }catch (JSONException e){
                                             e.printStackTrace();
@@ -149,7 +171,7 @@ public class HomeFragment extends Fragment {
                     }
                 });
                 queue.add(request);
-
+                db.close();
             }
         });
 
