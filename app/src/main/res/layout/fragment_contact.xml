@@ -58,12 +58,4 @@
         app:layout_constraintTop_toBottomOf="@+id/contactMessage"
         tools:layout_editor_absoluteX="0dp" />
 
-    <Button
-        android:id="@+id/contactTBD"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/button_height"
-        android:layout_marginTop="36dp"
-        android:text="@string/TBD_button"
-        app:layout_constraintTop_toBottomOf="@+id/contactSocialMedia"
-        tools:layout_editor_absoluteX="0dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
