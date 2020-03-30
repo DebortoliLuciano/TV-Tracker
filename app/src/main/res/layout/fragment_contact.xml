@@ -1,14 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragments.contactFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+<!--    title text-->
 
-</FrameLayout>
+
+    <TextView
+        android:id="@+id/contactHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/contact_title"
+        android:textAlignment="center"
+        android:textSize="@dimen/header_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/contactPhone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginTop="36dp"
+        android:text="@string/call_button"
+        app:layout_constraintTop_toBottomOf="@+id/contactHeader"
+        tools:layout_editor_absoluteX="20dp" />
+
+    <!--  come back here to these ones-->
+    <Button
+        android:id="@+id/contactEmail"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginTop="36dp"
+        android:text="@string/email_button"
+        app:layout_constraintTop_toBottomOf="@+id/contactPhone"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/contactMessage"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginTop="36dp"
+        android:text="@string/message_button"
+        app:layout_constraintTop_toBottomOf="@+id/contactEmail"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/contactSocialMedia"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginTop="36dp"
+        android:text="@string/social_media_button"
+        app:layout_constraintTop_toBottomOf="@+id/contactMessage"
+        tools:layout_editor_absoluteX="0dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
