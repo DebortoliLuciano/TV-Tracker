@@ -139,9 +139,15 @@ public class HomeFragment extends Fragment {
 
                                                 String summary = android.text.Html.fromHtml(show.getString("summary")).toString();
 
+                                                //Returns http, needs to be https
+                                                String image = show.getJSONObject("image").getString("medium");
+                                                StringBuilder sb = new StringBuilder(image);
+                                                sb.insert(4, 's');
+                                                image = sb.toString();
 
 
-                                                shows.add(new Show(show.getString("name"), show.getJSONObject("externals").getString("imdb"), show.getJSONObject("schedule").getString("time"), days, show.getJSONObject("image").getString("medium"), summary, "false"));
+                                                shows.add(new Show(show.getString("name"), show.getJSONObject("externals").getString("imdb"), show.getJSONObject("schedule").getString("time"), days, image, summary, "false"));
+
 
                                                 JSONObject network = show.getJSONObject("network");
                                                 Network existingNetwork =  db.getNetworkByName(network.getString("name"));

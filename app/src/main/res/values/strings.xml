@@ -15,6 +15,13 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
 
+<!--    contact screen text-->
+    <string name="contact_title">Questions? Comments? Concerns?\nTell Us!</string>
+    <string name="call_button">Call Us</string>
+    <string name="email_button">Email Us</string>
+    <string name="message_button">Text Us</string>
+    <string name="social_media_button">Check Out Our Youtube</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
