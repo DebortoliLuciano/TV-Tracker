@@ -184,8 +184,30 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db  = this.getReadableDatabase();
         Show show = null;
         Cursor cursor = db.query(TABLE_SHOWS, new String[]{COLUMN_SHOWID,
-        COLUMN_TITLE, COLUMN_TIME, COLUMN_DAY, COLUMN_IMAGE, COLUMN_SUMMARY, COLUMN_WATCHED}, COLUMN_SHOWID + "= ?",
+        COLUMN_TITLE, COLUMN_IMDBID, COLUMN_TIME, COLUMN_DAY, COLUMN_IMAGE, COLUMN_SUMMARY, COLUMN_WATCHED}, COLUMN_SHOWID + "= ?",
         new String[]{String.valueOf(id)}, null, null, null);
+        if(cursor.moveToFirst()){
+            show = new Show(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4),
+                    cursor.getString(5),
+                    cursor.getString(6),
+                    cursor.getString(7));
+        }
+        db.close();
+        return show;
+    }
+
+    //return show by name
+    public Show getShowByName(String name){
+        SQLiteDatabase db  = this.getReadableDatabase();
+        Show show = null;
+        Cursor cursor = db.query(TABLE_SHOWS, new String[]{COLUMN_SHOWID,
+                        COLUMN_TITLE, COLUMN_IMDBID, COLUMN_TIME, COLUMN_DAY, COLUMN_IMAGE, COLUMN_SUMMARY, COLUMN_WATCHED}, COLUMN_TITLE + "= ?",
+                new String[]{name}, null, null, null);
         if(cursor.moveToFirst()){
             show = new Show(
                     cursor.getInt(0),
@@ -205,8 +227,8 @@ public class DBHandler extends SQLiteOpenHelper {
     public ArrayList<Show> getWatchedShows(String watched){
         SQLiteDatabase db  = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_SHOWS, new String[]{COLUMN_SHOWID,
-                        COLUMN_TITLE, COLUMN_TIME, COLUMN_DAY, COLUMN_IMAGE, COLUMN_SUMMARY, COLUMN_WATCHED}, COLUMN_WATCHED + "= ?",
-                new String[]{String.valueOf(watched)}, null, null, null);
+                        COLUMN_TITLE, COLUMN_IMDBID, COLUMN_TIME, COLUMN_DAY, COLUMN_IMAGE, COLUMN_SUMMARY, COLUMN_WATCHED}, COLUMN_WATCHED + "= ?",
+                new String[]{watched}, null, null, null);
         ArrayList<Show> shows = new ArrayList<>();
         while(cursor.moveToNext()) {
             shows.add(new Show(
@@ -266,7 +288,7 @@ public class DBHandler extends SQLiteOpenHelper {
         Genre genre = null;
         Cursor cursor = db.query(TABLE_GENRE, new String[]{COLUMN_GENREID,
                         COLUMN_GENRENAME}, COLUMN_GENRENAME + "= ?",
-                new String[]{String.valueOf(name)}, null, null, null);
+                new String[]{name}, null, null, null);
         if(cursor.moveToFirst()){
             genre = new Genre(
                     cursor.getInt(0),
@@ -312,8 +334,8 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db  = this.getReadableDatabase();
         Network network = null;
         Cursor cursor = db.query(TABLE_NETWORK, new String[]{COLUMN_NETWORKID,
-                        COLUMN_NETWORKNAME}, COLUMN_NETWORKID + "= ?",
-                new String[]{String.valueOf(name)}, null, null, null);
+                        COLUMN_NETWORKNAME}, COLUMN_NETWORKNAME + "= ?",
+                new String[]{name}, null, null, null);
         if(cursor.moveToFirst()){
             network = new Network(
                     cursor.getInt(0),

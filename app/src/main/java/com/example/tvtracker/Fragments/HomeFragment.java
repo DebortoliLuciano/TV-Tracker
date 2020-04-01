@@ -91,7 +91,7 @@ public class HomeFragment extends Fragment {
                 ArrayList<Network> networks = db.getAllNetwork();
 
 
-                //TODO pull down genre table
+
                 //requst jsonArray named response
                 JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                         new Response.Listener<JSONArray>() {
@@ -115,6 +115,7 @@ public class HomeFragment extends Fragment {
                                             if (showObject != null) {
                                                 JSONObject show = showObject.getJSONObject("show");
                                                 JSONObject schedule = show.getJSONObject("schedule");
+                                                days="";
 
 
 
@@ -127,6 +128,7 @@ public class HomeFragment extends Fragment {
                                                 for(int y = 0; y < show.getJSONArray("genres").length(); y++){
                                                     //check to see if there is already a genre with the same name
                                                     Genre existingGenre = db.getGenrebyName(show.getJSONArray("genres").getString(y));
+                                                    System.out.println(existingGenre);
                                                     if(existingGenre == null){
                                                         //if there is not then add it to the database
                                                         Genre genre = new Genre(show.getJSONArray("genres").getString(y));
@@ -146,9 +148,10 @@ public class HomeFragment extends Fragment {
                                                 image = sb.toString();
 
 
+
                                                 shows.add(new Show(show.getString("name"), show.getJSONObject("externals").getString("imdb"), show.getJSONObject("schedule").getString("time"), days, image, summary, "false"));
 
-
+//TODO decide whether to keep this in
                                                 JSONObject network = show.getJSONObject("network");
                                                 Network existingNetwork =  db.getNetworkByName(network.getString("name"));
                                                 if(existingNetwork == null){
