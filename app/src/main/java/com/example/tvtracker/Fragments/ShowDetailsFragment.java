@@ -47,6 +47,8 @@ public class ShowDetailsFragment extends Fragment {
     int genreId;
     int networkId;
     String status;
+    DBHandler db;
+    ArrayList<Show> shows;
 
 
     public ShowDetailsFragment() {
@@ -71,8 +73,8 @@ public class ShowDetailsFragment extends Fragment {
         if(getArguments() != null){
             show = getArguments().getParcelable(SHOW);
 
-            final DBHandler db = new DBHandler(context);
-            final ArrayList<Show> shows = db.getAllShows();
+            db = new DBHandler(context);
+
             RequestQueue queue = Volley.newRequestQueue(context);
             String url = "https://api.tvmaze.com/singlesearch/shows?q=" + show.getTitle();
             System.out.println(url);
@@ -119,17 +121,21 @@ public class ShowDetailsFragment extends Fragment {
             actionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    try {
-                        Show existingShow = db.getShowByName(show.getTitle().toString());
+                    shows = db.getAllShows();
+                    //try to pull down a show from the db
+                        Show existingShow = db.getShowByName(show.getTitle());
+                        if(existingShow == null) {
+                            //if it fails add the show to the show table
+                            show.setWatched("false");
+                            db.addShow(show);
 
-                        System.out.println(existingShow.getId());
-                        System.out.println("Contained");
-                    }catch (Exception e){
-                        db.addShow(show);
-
-                        db.addMainRow(new MainRow(db.getShowByName(show.getTitle()).getId(), genreId, status, 1));
-                        System.out.println(db.getShowByName(show.getTitle()).getId());
-                    }
+                            //add the main row to the main row table
+                            db.addMainRow(new MainRow(db.getShowByName(show.getTitle()).getId(), genreId, status, 1));
+                        }else{
+                            //if it does not exist in the db the object will be null
+                            //the null object will throw an exception if you try to access a property
+                            System.out.println("Contained");
+                        }
 
                 }
             });

@@ -245,6 +245,8 @@ public class DBHandler extends SQLiteOpenHelper {
         return shows;
     }
 
+
+
     //read all shows
     public ArrayList<Show> getAllShows(){
        SQLiteDatabase db  = this.getReadableDatabase();
@@ -467,6 +469,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 new String[]{String.valueOf(mainRow)});
         db.close();
     }
+
 
     //other tables don't need deletes for now, may change later
 }

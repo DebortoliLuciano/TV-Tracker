@@ -7,7 +7,7 @@
     tools:context=".Fragments.watchListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/watchedList"
+        android:id="@+id/watchList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"
