@@ -1,7 +1,9 @@
 package com.example.tvtracker.Fragments;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -41,14 +43,14 @@ import java.util.ArrayList;
  */
 public class ShowDetailsFragment extends Fragment {
 
-    Show show;
+    private Show show;
     public static final String SHOW = "Show";
 
-    int genreId;
-    int networkId;
-    String status;
-    DBHandler db;
-    ArrayList<Show> shows;
+    private int genreId;
+    private int networkId;
+    private String status;
+    private DBHandler db;
+    private ArrayList<Show> shows;
 
 
     public ShowDetailsFragment() {
@@ -67,7 +69,8 @@ public class ShowDetailsFragment extends Fragment {
         final TextView description = view.findViewById(R.id.descriptionText);
         final TextView moreInfo = view.findViewById(R.id.moreInfoText);
         final ImageView imageView = view.findViewById(R.id.posterImage);
-        Button actionButton = view.findViewById(R.id.favoriteButton);
+        final Button watchButton = view.findViewById(R.id.favoriteButton);
+        final Button watchedButton = view.findViewById(R.id.watchedButton);
 
 
         if(getArguments() != null){
@@ -79,6 +82,14 @@ public class ShowDetailsFragment extends Fragment {
             String url = "https://api.tvmaze.com/singlesearch/shows?q=" + show.getTitle();
             System.out.println(url);
 
+            if(show.getWatched().equals("false")){
+                watchButton.setText("Remove from Watch List");
+            }else if(show.getWatched().equals("true")){
+                watchedButton.setText("Remove from Watched List");
+            }else{
+                watchButton.setText("Add to Watch List");
+                watchedButton.setText("Add to Watched List");
+            }
 
 
             final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -90,10 +101,10 @@ public class ShowDetailsFragment extends Fragment {
                                     genreId = db.getGenrebyName(response.getJSONArray("genres").getString(0)).getId();
                                     status = response.getString("status");
                                     //TODO Decide whether to keep this in
-                                    //networkId = db.getNetworkByName("Fox").getId();
+                                    networkId = db.getNetworkByName(response.getJSONObject("network").getString("name")).getId();
 
                                     moreInfo.setText(db.getGenre(genreId).getGenreName() +
-                                            "\n" + db.getNetwork(1).getNetworkName() +
+                                            "\n" + db.getNetwork(networkId).getNetworkName() +
                                             "\n" + status +
                                             "\n" + "IMDB id: " + show.getImdbID() +
                                             "\n" + show.getDay() +
@@ -118,25 +129,101 @@ public class ShowDetailsFragment extends Fragment {
                 Picasso.get().load(show.getCover()).resize(210, 295).centerCrop().placeholder(R.drawable.ic_menu_camera).error(R.drawable.ic_contact_phone_black_24dp).into(imageView);
 
             }
-            actionButton.setOnClickListener(new View.OnClickListener() {
+            watchButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    shows = db.getAllShows();
-                    //try to pull down a show from the db
-                        Show existingShow = db.getShowByName(show.getTitle());
-                        if(existingShow == null) {
-                            //if it fails add the show to the show table
-                            show.setWatched("false");
-                            db.addShow(show);
 
-                            //add the main row to the main row table
-                            db.addMainRow(new MainRow(db.getShowByName(show.getTitle()).getId(), genreId, status, 1));
-                        }else{
-                            //if it does not exist in the db the object will be null
-                            //the null object will throw an exception if you try to access a property
-                            System.out.println("Contained");
-                        }
+                    if(show.getWatched().equals("false")){
+                        new AlertDialog.Builder(context)
+                                .setTitle("Remove From Watch List")
+                                .setMessage("Are you sure you want to remove " + show.getTitle() + " from your watch list?")
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        watchButton.setText("Add to Watch List");
+                                        int id = db.getShowByName(show.getTitle()).getId();
+                                        db.deleteShow(id);
+                                    }
+                                })
+                                .setNegativeButton("No", null)
+                                .show();
+                    }else if(show.getWatched().equals("")) {
+                        new AlertDialog.Builder(context)
+                                .setTitle("Add To Watch List")
+                                .setMessage("Are you sure you want to add " + show.getTitle() + " to your watch list?")
+                                .setIcon(android.R.drawable.ic_input_add)
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        watchButton.setText("Remove from Watch List");
+                                        //if it fails add the show to the show table
+                                        show.setWatched("false");
+                                        db.addShow(show);
 
+                                        //add the main row to the main row table
+                                        db.addMainRow(new MainRow(db.getShowByName(show.getTitle()).getId(), genreId, status, networkId));
+                                    }
+                                })
+                                .setNegativeButton("No", null)
+                                .show();
+
+                    }
+                }
+            });
+
+            watchedButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(show.getWatched().equals("true")){
+                        new AlertDialog.Builder(context)
+                                .setTitle("Remove From Watched List")
+                                .setMessage("Are you sure you want to remove " + show.getTitle() + " from your watched list?")
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        watchedButton.setText("Add to Watched List");
+                                        int id = db.getShowByName(show.getTitle()).getId();
+                                        db.deleteShow(id);
+                                    }
+                                })
+                                .setNegativeButton("No", null)
+                                .show();
+                    }else if(show.getWatched().equals("")){
+                        new AlertDialog.Builder(context)
+                                .setTitle("Add To Watched List")
+                                .setMessage("Are you sure you want to add " + show.getTitle() + " to your watched list?")
+                                .setIcon(android.R.drawable.ic_input_add)
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        watchedButton.setText("Remove from Watched List");
+                                        show.setWatched("true");
+                                        db.addShow(show);
+
+                                        db.addMainRow(new MainRow(db.getShowByName(show.getTitle()).getId(), genreId, status, networkId));
+                                    }
+                                })
+                                .setNegativeButton("No", null)
+                                .show();
+                    }else if(show.getWatched().equals("false")){
+                        new AlertDialog.Builder(context)
+                                .setTitle("Add To Watched List")
+                                .setMessage("Are you sure you want to add " + show.getTitle() + " to your watched list? (Will be removed from watch list)")
+                                .setIcon(android.R.drawable.ic_input_add)
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        watchButton.setText("Add to Watch List");
+                                        show.setWatched("true");
+                                        db.updateShow(show);
+                                    }
+                                })
+                                .setNegativeButton("No", null)
+                                .show();
+
+                    }
                 }
             });
         }

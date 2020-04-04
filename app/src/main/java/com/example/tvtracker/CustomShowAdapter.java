@@ -72,6 +72,8 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
         holder.title.setText(show.getTitle());
         holder.summary.setText(show.getSummary());
         if(watchListShow != null && watchListShow.getWatched().equals("false")){
+            holder.star.setImageResource(R.drawable.ic_star_half_black_24dp);
+        }else if(watchListShow != null && watchListShow.getWatched().equals("true")){
             holder.star.setImageResource(R.drawable.ic_star_black_24dp);
         }else {
             holder.star.setImageResource(R.drawable.ic_star_border_black_24dp);
@@ -82,7 +84,7 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
             public void onClick(View v) {
                 //add query to check if item clicked is in the watch list table
                 //if it is then display this TODO
-                if(watchListShow != null && watchListShow.getWatched().equals("false")){
+                if(watchListShow != null && watchListShow.getWatched().equals("false")) {
                     new AlertDialog.Builder(context)
                             .setTitle("Remove From Watch List")
                             .setMessage("Are you sure you want to remove " + show.getTitle() + " from your watch list?")
@@ -97,11 +99,26 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
                             })
                             .setNegativeButton("No", null)
                             .show();
-                }else {
+                }else if (watchListShow != null && watchListShow.getWatched().equals("true")){
+                    new AlertDialog.Builder(context)
+                            .setTitle("Remove From Watched List")
+                            .setMessage("Are you sure you want to remove " + show.getTitle() + " from your watched list?")
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    int id = watchListShow.getId();
+                                    db.deleteShow(id);
+                                    holder.star.setImageResource(R.drawable.ic_star_border_black_24dp);
+                                }
+                            })
+                            .setNegativeButton("No", null)
+                            .show();
+                } else {
                     new AlertDialog.Builder(context)
                             .setTitle("Add to Watch List")
                             .setMessage("Are you sure you want to add " + show.getTitle() + " to your watch list?")
-                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setIcon(android.R.drawable.ic_input_add)
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -119,7 +136,6 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
 
                                                         genreId = db.getGenrebyName(response.getJSONArray("genres").getString(0)).getId();
                                                         status = response.getString("status");
-                                                        //TODO Decide whether to keep this in
                                                         networkId = db.getNetworkByName(response.getJSONObject("network").getString("name")).getId();
 
                                                     } catch (Exception e) {
@@ -136,16 +152,13 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
 
                                     //add the main row to the main row table
                                     db.addMainRow(new MainRow(db.getShowByName(show.getTitle()).getId(), genreId, status, networkId));
-                                    holder.star.setImageResource(R.drawable.ic_star_black_24dp);
+                                    holder.star.setImageResource(R.drawable.ic_star_half_black_24dp);
                                 }
                             })
                             .setNegativeButton("No", null)
                             .show();
                 }
 
-
-
-                //else add to the watch list and display a alert TODO
             }
         });
 
@@ -166,6 +179,7 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
         protected ImageView posterImage;
         protected ImageView star;
 
+
         public CustomViewHolder(final View view){
             super(view);
             this.title = view.findViewById(R.id.titleText);
@@ -179,8 +193,15 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
         }
         @Override
         public void onClick(View v){
+            final Show watchListShow = db.getShowByName(shows.get(getAdapterPosition()).getTitle());
+
             Bundle extra = new Bundle();
-            extra.putParcelable(ShowDetailsFragment.SHOW, shows.get(getAdapterPosition()));
+            if(watchListShow!=null){
+                extra.putParcelable(ShowDetailsFragment.SHOW, watchListShow);
+            }else {
+                extra.putParcelable(ShowDetailsFragment.SHOW, shows.get(getAdapterPosition()));
+            }
+
 
             Navigation.findNavController(v).navigate(R.id.showDetails, extra);
         }
@@ -194,7 +215,22 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
             final Show watchListShow = db.getShowByName(shows.get(getAdapterPosition()).getTitle());
             final Show show = shows.get(getAdapterPosition());
 
-            if(watchListShow != null && watchListShow.getWatched().equals("false")){
+            if(watchListShow != null && watchListShow.getWatched().equals("true")){
+                new AlertDialog.Builder(context)
+                        .setTitle("Remove From Watched List")
+                        .setMessage("Are you sure you want to remove " + show.getTitle() + " from your watched list?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                int id = watchListShow.getId();
+                                db.deleteShow(id);
+                                star.setImageResource(R.drawable.ic_star_border_black_24dp);
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+            }else if(watchListShow != null && watchListShow.getWatched().equals("false")){
                 new AlertDialog.Builder(context)
                         .setTitle("Remove From Watch List")
                         .setMessage("Are you sure you want to remove " + watchListShow.getTitle() + " from your watch list?")
@@ -207,13 +243,30 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
                                 star.setImageResource(R.drawable.ic_star_border_black_24dp);
                             }
                         })
-                        .setNegativeButton("No", null)
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                new AlertDialog.Builder(context)
+                                        .setTitle("Add To Watched List")
+                                        .setMessage("Are you sure you want to add " + watchListShow.getTitle() + " to your watched list?(Removes from watch list)")
+                                        .setIcon(android.R.drawable.ic_input_add)
+                                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                show.setWatched("true");
+                                                db.updateShow(show);
+                                                star.setImageResource(R.drawable.ic_star_black_24dp);
+                                            }
+                                        })
+                                        .setNegativeButton("No", null).show();
+                            }
+                        })
                         .show();
-            }else {
+            } else {
                 new AlertDialog.Builder(context)
                         .setTitle("Add to Watch List")
                         .setMessage("Are you sure you want to add " + show.getTitle() + " to your watch list?")
-                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setIcon(android.R.drawable.ic_input_add)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -231,7 +284,7 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
 
                                                     genreId = db.getGenrebyName(response.getJSONArray("genres").getString(0)).getId();
                                                     status = response.getString("status");
-                                                    //TODO Decide whether to keep this in
+
                                                     networkId = db.getNetworkByName(response.getJSONObject("network").getString("name")).getId();
 
                                                 } catch (Exception e) {
@@ -248,7 +301,7 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
 
                                 //add the main row to the main row table
                                 db.addMainRow(new MainRow(db.getShowByName(show.getTitle()).getId(), genreId, status, networkId));
-                                star.setImageResource(R.drawable.ic_star_black_24dp);
+                                star.setImageResource(R.drawable.ic_star_half_black_24dp);
                             }
                         })
                         .setNegativeButton("No", null)

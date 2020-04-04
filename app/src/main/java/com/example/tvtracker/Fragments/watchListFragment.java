@@ -43,7 +43,7 @@ public class watchListFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.watchList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        //TODO add adapter to this location
+
 
         return view;
     }
