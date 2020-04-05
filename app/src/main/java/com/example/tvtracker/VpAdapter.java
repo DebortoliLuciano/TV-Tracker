@@ -28,11 +28,11 @@ public class VpAdapter extends Fragment {
         // Required empty public constructor
     }
 
-    public static VpAdapter newInstance(String placeHolder, int img) {
+    public static VpAdapter newInstance(String header, String body) {
         VpAdapter fragment = new VpAdapter();
         Bundle args = new Bundle();
-        args.putString(Param2, placeHolder);
-        args.putInt(Param, img);
+        args.putString(Param, header);
+        args.putString(Param2, body);
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,10 +53,10 @@ public class VpAdapter extends Fragment {
         View view = inflater.inflate(R.layout.vp_adapter, container, false);
 
         TextView TextV = view.findViewById(R.id.vpHeader);
-        TextView textV2 = view.findViewById(R.id.vpBody);
+//        TextView textV2 = view.findViewById(R.id.vpBody);
         if (mParam2 != null) {
             TextV.setText(mParam);
-            textV2.setText(mParam2);
+//            textV2.setText(mParam2);
         }
 
         return view;
