@@ -26,6 +26,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="watchListButton">Add to Watch List</string>
     <string name="watchedListButton">Add to Watched List</string>
+    <string name="imdbButton">IMDB Page</string>
 
 
 </resources>

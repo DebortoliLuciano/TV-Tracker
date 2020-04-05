@@ -35,7 +35,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:elevation="2dp"
@@ -43,30 +42,39 @@
         app:layout_constraintBottom_toTopOf="@+id/favoriteButton"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
         app:layout_constraintStart_toStartOf="@+id/cardView"
-        app:layout_constraintTop_toBottomOf="@+id/posterImage" />
+        app:layout_constraintTop_toBottomOf="@+id/imdbButton" />
 
     <TextView
         android:id="@+id/moreInfoText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="8dp"
         android:elevation="2dp"
-        android:lines="6"
+        android:lines="5"
         android:text="Producer and Other Info"
-        app:layout_constraintBottom_toTopOf="@+id/descriptionText"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
         app:layout_constraintStart_toEndOf="@+id/posterImage"
         app:layout_constraintTop_toBottomOf="@+id/titleText" />
 
+    <Button
+        android:id="@+id/imdbButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="24dp"
+        android:elevation="2dp"
+        android:text="@string/imdbButton"
+        app:layout_constraintEnd_toEndOf="@+id/cardView"
+        app:layout_constraintStart_toEndOf="@+id/posterImage"
+        app:layout_constraintTop_toBottomOf="@+id/moreInfoText" />
+
     <ImageView
         android:id="@+id/posterImage"
-        android:layout_width="210px"
-        android:layout_height="295px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:elevation="2dp"
         app:layout_constraintStart_toStartOf="@+id/cardView"
         app:layout_constraintTop_toTopOf="@+id/cardView"
@@ -81,6 +89,8 @@
         android:layout_marginEnd="24dp"
         android:elevation="2dp"
         android:text="Title"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
         app:layout_constraintStart_toEndOf="@+id/posterImage"
         app:layout_constraintTop_toTopOf="@+id/cardView" />

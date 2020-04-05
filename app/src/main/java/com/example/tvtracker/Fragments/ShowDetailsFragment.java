@@ -2,8 +2,10 @@ package com.example.tvtracker.Fragments;
 
 
 import android.app.AlertDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -71,6 +73,7 @@ public class ShowDetailsFragment extends Fragment {
         final ImageView imageView = view.findViewById(R.id.posterImage);
         final Button watchButton = view.findViewById(R.id.favoriteButton);
         final Button watchedButton = view.findViewById(R.id.watchedButton);
+        final Button imdbButton = view.findViewById(R.id.imdbButton);
 
 
         if(getArguments() != null){
@@ -100,15 +103,15 @@ public class ShowDetailsFragment extends Fragment {
 
                                     genreId = db.getGenrebyName(response.getJSONArray("genres").getString(0)).getId();
                                     status = response.getString("status");
-                                    //TODO Decide whether to keep this in
+
                                     networkId = db.getNetworkByName(response.getJSONObject("network").getString("name")).getId();
 
                                     moreInfo.setText(db.getGenre(genreId).getGenreName() +
                                             "\n" + db.getNetwork(networkId).getNetworkName() +
                                             "\n" + status +
-                                            "\n" + "IMDB id: " + show.getImdbID() +
                                             "\n" + show.getDay() +
                                             "\n" + show.getTime());
+
 
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -126,7 +129,7 @@ public class ShowDetailsFragment extends Fragment {
 
                 title.setText(show.getTitle());
                 description.setText(show.getSummary());
-                Picasso.get().load(show.getCover()).resize(210, 295).centerCrop().placeholder(R.drawable.ic_menu_camera).error(R.drawable.ic_contact_phone_black_24dp).into(imageView);
+                Picasso.get().load(show.getCover()).resize(310, 400).centerCrop().placeholder(R.drawable.ic_menu_camera).error(R.drawable.ic_contact_phone_black_24dp).into(imageView);
 
             }
             watchButton.setOnClickListener(new View.OnClickListener() {
@@ -226,6 +229,18 @@ public class ShowDetailsFragment extends Fragment {
                     }
                 }
             });
+
+            if(show.getImdbID() != null){
+                imdbButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+                        intent.putExtra(SearchManager.QUERY, "http://imdb.com/title/"+show.getImdbID());
+                        startActivity(intent);
+                    }
+                });
+            }
+
         }
 
 

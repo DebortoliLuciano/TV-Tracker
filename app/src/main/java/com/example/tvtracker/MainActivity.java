@@ -23,6 +23,8 @@ import android.view.Menu;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static FloatingActionButton fab;
+
     private AppBarConfiguration mAppBarConfiguration;
 
     @Override
@@ -31,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
+        fab.hide();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
