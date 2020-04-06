@@ -30,7 +30,6 @@
         app:layout_constraintTop_toBottomOf="@+id/contactHeader"
         tools:layout_editor_absoluteX="20dp" />
 
-    <!--  come back here to these ones-->
     <Button
         android:id="@+id/contactEmail"
         android:layout_width="match_parent"
