@@ -35,12 +35,16 @@ import org.json.JSONObject;
 import java.net.URL;
 import java.util.ArrayList;
 
+/**
+ * @author Luciano DeBortoli
+ */
 public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.CustomViewHolder> {
 
     //private ArrayList<JSONObject> shows;
     private ArrayList<Show> shows;
     private Context context;
 
+    //add some global variables
     private int genreId;
     private int networkId;
     private String status;
@@ -48,6 +52,7 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
 
 
     public CustomShowAdapter(ArrayList<Show> shows, Context context){
+        //constructor
         this.shows=shows;
         this.context = context;
         this.db = new DBHandler(context);
@@ -64,13 +69,17 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
     @Override
     public void onBindViewHolder(@NonNull final CustomViewHolder holder, int position) {
 
+        //get the current show
         final Show show = shows.get(position);
 
+        //look to see if the show is in the database
         final Show watchListShow = db.getShowByName(show.getTitle());
 
 
+        //assign data to holders
         holder.title.setText(show.getTitle());
         holder.summary.setText(show.getSummary());
+        //depending on the status of the show in the table change the star in the top corner
         if(watchListShow != null && watchListShow.getWatched().equals("false")){
             holder.star.setImageResource(R.drawable.ic_star_half_black_24dp);
         }else if(watchListShow != null && watchListShow.getWatched().equals("true")){
@@ -79,12 +88,14 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
             holder.star.setImageResource(R.drawable.ic_star_border_black_24dp);
         }
 
+        //if the star is clicked
         holder.star.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //add query to check if item clicked is in the watch list table
-                //if it is then display this TODO
+
                 if(watchListShow != null && watchListShow.getWatched().equals("false")) {
+                    //display alert dialogs to move the show in the table
                     new AlertDialog.Builder(context)
                             .setTitle("Remove From Watch List")
                             .setMessage("Are you sure you want to remove " + show.getTitle() + " from your watch list?")
@@ -163,6 +174,7 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
         });
 
 
+        //asign the image
         Picasso.get().load(show.getCover()).resize(210, 295).centerCrop().placeholder(R.drawable.ic_menu_camera).error(R.drawable.ic_contact_phone_black_24dp).into(holder.posterImage);
 
 
@@ -170,10 +182,12 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
 
     @Override
     public int getItemCount() {
+        //get the total size of the list
         return shows.size();
     }
 
     class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
+        //declare the elements
         protected TextView title;
         protected TextView summary;
         protected ImageView posterImage;
@@ -182,6 +196,7 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
 
         public CustomViewHolder(final View view){
             super(view);
+            //find the elements
             this.title = view.findViewById(R.id.titleText);
             this.summary = view.findViewById(R.id.moreInfoText);
             this.posterImage = view.findViewById(R.id.posterImage);
@@ -191,14 +206,17 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
             view.setOnClickListener(this);
             view.setOnLongClickListener(this);
         }
+        //on click send the show to the show details fragment
         @Override
         public void onClick(View v){
             final Show watchListShow = db.getShowByName(shows.get(getAdapterPosition()).getTitle());
 
             Bundle extra = new Bundle();
+            //if the show is in the table send that one
             if(watchListShow!=null){
                 extra.putParcelable(ShowDetailsFragment.SHOW, watchListShow);
             }else {
+                //else send the one from the api
                 extra.putParcelable(ShowDetailsFragment.SHOW, shows.get(getAdapterPosition()));
             }
 
@@ -210,11 +228,12 @@ public class CustomShowAdapter extends RecyclerView.Adapter<CustomShowAdapter.Cu
         public boolean onLongClick(View v){
 
             //add query to check if item clicked is in the watch list table
-            //if it is then display this TODO
+
 
             final Show watchListShow = db.getShowByName(shows.get(getAdapterPosition()).getTitle());
             final Show show = shows.get(getAdapterPosition());
 
+            //depending on the status of the show in the table display an alert to move the show through the table
             if(watchListShow != null && watchListShow.getWatched().equals("true")){
                 new AlertDialog.Builder(context)
                         .setTitle("Remove From Watched List")

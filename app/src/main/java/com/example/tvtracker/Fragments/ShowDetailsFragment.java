@@ -42,6 +42,7 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
+ * @author Luciano DeBortoli
  */
 public class ShowDetailsFragment extends Fragment {
 
@@ -66,6 +67,7 @@ public class ShowDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_show_details, container, false);
 
+        //find all elements in the layout
         final Context context = this.getContext();
         final TextView title = view.findViewById(R.id.titleText);
         final TextView description = view.findViewById(R.id.descriptionText);
@@ -76,15 +78,20 @@ public class ShowDetailsFragment extends Fragment {
         final Button imdbButton = view.findViewById(R.id.imdbButton);
 
 
+        //if a show is passed
         if(getArguments() != null){
+            //unparse the object and asign it to show
             show = getArguments().getParcelable(SHOW);
 
+            //get the db handler
             db = new DBHandler(context);
 
+            //create a volley request
             RequestQueue queue = Volley.newRequestQueue(context);
             String url = "https://api.tvmaze.com/singlesearch/shows?q=" + show.getTitle();
             System.out.println(url);
 
+            //depending on the status of the show in the database change the text of the buttons
             if(show.getWatched().equals("false")){
                 watchButton.setText("Remove from Watch List");
             }else if(show.getWatched().equals("true")){
@@ -95,17 +102,20 @@ public class ShowDetailsFragment extends Fragment {
             }
 
 
+            //start a json object request
             final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
 
+                                //get the genre id, status and network id for the show
                                     genreId = db.getGenrebyName(response.getJSONArray("genres").getString(0)).getId();
                                     status = response.getString("status");
 
                                     networkId = db.getNetworkByName(response.getJSONObject("network").getString("name")).getId();
 
+                                    //set the info into a text field
                                     moreInfo.setText(db.getGenre(genreId).getGenreName() +
                                             "\n" + db.getNetwork(networkId).getNetworkName() +
                                             "\n" + status +
@@ -125,8 +135,10 @@ public class ShowDetailsFragment extends Fragment {
             });
             queue.add(request);
 
+            //if the show does not equal null
             if(show != null){
 
+                //set info and image
                 title.setText(show.getTitle());
                 description.setText(show.getSummary());
                 Picasso.get().load(show.getCover()).resize(310, 400).centerCrop().placeholder(R.drawable.ic_menu_camera).error(R.drawable.ic_contact_phone_black_24dp).into(imageView);
@@ -136,6 +148,7 @@ public class ShowDetailsFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
 
+                    //depending on the state of the show in the database use alert dialog boxes to change its status
                     if(show.getWatched().equals("false")){
                         new AlertDialog.Builder(context)
                                 .setTitle("Remove From Watch List")
@@ -175,6 +188,7 @@ public class ShowDetailsFragment extends Fragment {
                 }
             });
 
+            //same as above but with buttons
             watchedButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -230,6 +244,7 @@ public class ShowDetailsFragment extends Fragment {
                 }
             });
 
+            //when the imdb button is clicked take the user to the imdb page
             if(show.getImdbID() != null){
                 imdbButton.setOnClickListener(new View.OnClickListener() {
                     @Override
