@@ -10,7 +10,7 @@
         android:label="Home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_nav_home_to_nav_details"
+            android:id="@+id/showDetails"
             app:destination="@id/nav_details" />
     </fragment>
     <fragment
@@ -22,15 +22,28 @@
         android:id="@+id/nav_watched"
         android:name="com.example.tvtracker.Fragments.WatchedListFragment"
         android:label="Watched Shows"
-        tools:layout="@layout/fragment_watched_list" />
+        tools:layout="@layout/fragment_watched_list" >
+        <action
+            android:id="@+id/showDetails"
+            app:destination="@id/nav_details" />
+    </fragment>
     <fragment
         android:id="@+id/nav_watch"
         android:name="com.example.tvtracker.Fragments.watchListFragment"
         android:label="Watch List"
-        tools:layout="@layout/fragment_watch_list" />
+        tools:layout="@layout/fragment_watch_list" >
+        <action
+            android:id="@+id/showDetails"
+            app:destination="@id/nav_details" />
+    </fragment>
     <fragment
         android:id="@+id/nav_contact"
         android:name="com.example.tvtracker.Fragments.contactFragment"
         android:label="About Us"
         tools:layout="@layout/fragment_contact" />
+    <fragment
+        android:id="@+id/nav_tutorial"
+        android:name="com.example.tvtracker.Fragments.Tutorial"
+        android:label="Help"
+        tools:layout="@layout/fragment_tutorial" />
 </navigation>

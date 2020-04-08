@@ -1,21 +1,31 @@
 package com.example.tvtracker.Fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.tvtracker.CustomShowAdapter;
+import com.example.tvtracker.DBHandler;
+import com.example.tvtracker.JavaBeans.Show;
 import com.example.tvtracker.R;
+
+import java.util.ArrayList;
 
 
 /**
  * A simple {@link Fragment} subclass.
+ * @author Luciano DeBortoli
  */
 public class WatchedListFragment extends Fragment {
+
 
 
     public WatchedListFragment() {
@@ -27,7 +37,20 @@ public class WatchedListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_watched_list, container, false);
+        final View view = inflater.inflate(R.layout.fragment_watched_list, container, false);
+
+
+        //get context and the shows table and assign it to the recycler view
+        Context context = this.getContext();
+        DBHandler db = new DBHandler(getContext());
+        ArrayList<Show> shows = db.getWatchedShows("true");
+        CustomShowAdapter adapter = new CustomShowAdapter(shows, context);
+        RecyclerView recyclerView = view.findViewById(R.id.watchList);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+        return view;
     }
 
 }

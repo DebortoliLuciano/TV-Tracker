@@ -12,14 +12,18 @@
         <item
             android:id="@+id/nav_watched"
             android:icon="@drawable/ic_playlist_add_check_black_24dp"
-            android:title="Watched Shows" />
+            android:title="@string/menu_watched_list" />
         <item
             android:id="@+id/nav_watch"
             android:icon="@drawable/ic_watch_later_black_24dp"
-            android:title="Watch List" />
+            android:title="@string/menu_watch_list" />
         <item
             android:id="@+id/nav_contact"
             android:icon="@drawable/ic_contact_phone_black_24dp"
-            android:title="About US" />
+            android:title="@string/menu_contact" />
+        <item
+            android:id="@+id/nav_tutorial"
+            android:icon="@drawable/ic_help_black_24dp"
+            android:title="@string/menu_help" />
     </group>
 </menu>
