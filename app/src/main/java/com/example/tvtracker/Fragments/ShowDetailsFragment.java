@@ -72,6 +72,10 @@ public class ShowDetailsFragment extends Fragment {
         final TextView title = view.findViewById(R.id.titleText);
         final TextView description = view.findViewById(R.id.descriptionText);
         final TextView moreInfo = view.findViewById(R.id.moreInfoText);
+        final TextView moreInfo2 = view.findViewById(R.id.moreInfoText2);
+        final TextView moreInfo3 = view.findViewById(R.id.moreInfoText3);
+        final TextView moreInfo4 = view.findViewById(R.id.moreInfoText4);
+        final TextView moreInfo5 = view.findViewById(R.id.moreInfoText5);
         final ImageView imageView = view.findViewById(R.id.posterImage);
         final Button watchButton = view.findViewById(R.id.favoriteButton);
         final Button watchedButton = view.findViewById(R.id.watchedButton);
@@ -116,14 +120,18 @@ public class ShowDetailsFragment extends Fragment {
                                     networkId = db.getNetworkByName(response.getJSONObject("network").getString("name")).getId();
 
                                     //set the info into a text field
-                                    moreInfo.setText(db.getGenre(genreId).getGenreName() +
-                                            "\n" + db.getNetwork(networkId).getNetworkName() +
-                                            "\n" + status +
-                                            "\n" + show.getDay() +
-                                            "\n" + show.getTime());
+
+                                    moreInfo3.setText(status);
+                                    moreInfo4.setText(show.getDay());
+                                    moreInfo5.setText(show.getTime());
+                                    moreInfo.setText(db.getGenre(genreId).getGenreName());
+                                    moreInfo2.setText(db.getNetwork(networkId).getNetworkName());
 
 
                             } catch (Exception e) {
+                                moreInfo3.setText(status);
+                                moreInfo4.setText(show.getDay());
+                                moreInfo5.setText(show.getTime());
                                 e.printStackTrace();
                             }
                         }

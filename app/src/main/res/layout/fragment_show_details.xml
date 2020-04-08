@@ -51,11 +51,58 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="24dp"
         android:elevation="2dp"
-        android:lines="5"
-        android:text="Producer and Other Info"
+        android:text="@string/na_string"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
         app:layout_constraintStart_toEndOf="@+id/posterImage"
         app:layout_constraintTop_toBottomOf="@+id/titleText" />
+
+    <TextView
+        android:id="@+id/moreInfoText2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="24dp"
+        android:elevation="2dp"
+        android:text="@string/na_string"
+        app:layout_constraintEnd_toEndOf="@+id/cardView"
+        app:layout_constraintStart_toEndOf="@+id/posterImage"
+        app:layout_constraintTop_toBottomOf="@+id/moreInfoText" />
+
+    <TextView
+        android:id="@+id/moreInfoText3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="24dp"
+        android:elevation="2dp"
+        android:text="@string/na_string"
+        app:layout_constraintEnd_toEndOf="@+id/cardView"
+        app:layout_constraintStart_toEndOf="@+id/posterImage"
+        app:layout_constraintTop_toBottomOf="@+id/moreInfoText2" />
+
+    <TextView
+        android:id="@+id/moreInfoText4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="24dp"
+        android:elevation="2dp"
+        android:text="@string/na_string"
+        app:layout_constraintEnd_toEndOf="@+id/cardView"
+        app:layout_constraintStart_toEndOf="@+id/posterImage"
+        app:layout_constraintTop_toBottomOf="@+id/moreInfoText3" />
+
+    <TextView
+        android:id="@+id/moreInfoText5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="24dp"
+        android:elevation="2dp"
+        android:text="@string/na_string"
+        app:layout_constraintEnd_toEndOf="@+id/cardView"
+        app:layout_constraintStart_toEndOf="@+id/posterImage"
+        app:layout_constraintTop_toBottomOf="@+id/moreInfoText4" />
 
     <Button
         android:id="@+id/imdbButton"
@@ -67,7 +114,7 @@
         android:text="@string/imdbButton"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
         app:layout_constraintStart_toEndOf="@+id/posterImage"
-        app:layout_constraintTop_toBottomOf="@+id/moreInfoText" />
+        app:layout_constraintTop_toBottomOf="@+id/moreInfoText5" />
 
     <ImageView
         android:id="@+id/posterImage"
@@ -107,6 +154,8 @@
         app:cardElevation="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
