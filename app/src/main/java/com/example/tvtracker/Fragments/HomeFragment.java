@@ -37,6 +37,7 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
+ * @author Luciano DeBortoli
  */
 public class HomeFragment extends Fragment {
 
@@ -69,6 +70,8 @@ public class HomeFragment extends Fragment {
 
         //find the recycler view and set the adapter
         RecyclerView recyclerView = view.findViewById(R.id.showList);
+
+
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

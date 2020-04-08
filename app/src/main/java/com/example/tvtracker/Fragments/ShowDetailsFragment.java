@@ -2,8 +2,10 @@ package com.example.tvtracker.Fragments;
 
 
 import android.app.AlertDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -40,6 +42,7 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
+ * @author Luciano DeBortoli
  */
 public class ShowDetailsFragment extends Fragment {
 
@@ -64,24 +67,35 @@ public class ShowDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_show_details, container, false);
 
+        //find all elements in the layout
         final Context context = this.getContext();
         final TextView title = view.findViewById(R.id.titleText);
         final TextView description = view.findViewById(R.id.descriptionText);
         final TextView moreInfo = view.findViewById(R.id.moreInfoText);
+        final TextView moreInfo2 = view.findViewById(R.id.moreInfoText2);
+        final TextView moreInfo3 = view.findViewById(R.id.moreInfoText3);
+        final TextView moreInfo4 = view.findViewById(R.id.moreInfoText4);
+        final TextView moreInfo5 = view.findViewById(R.id.moreInfoText5);
         final ImageView imageView = view.findViewById(R.id.posterImage);
         final Button watchButton = view.findViewById(R.id.favoriteButton);
         final Button watchedButton = view.findViewById(R.id.watchedButton);
+        final Button imdbButton = view.findViewById(R.id.imdbButton);
 
 
+        //if a show is passed
         if(getArguments() != null){
+            //unparse the object and asign it to show
             show = getArguments().getParcelable(SHOW);
 
+            //get the db handler
             db = new DBHandler(context);
 
+            //create a volley request
             RequestQueue queue = Volley.newRequestQueue(context);
             String url = "https://api.tvmaze.com/singlesearch/shows?q=" + show.getTitle();
             System.out.println(url);
 
+            //depending on the status of the show in the database change the text of the buttons
             if(show.getWatched().equals("false")){
                 watchButton.setText("Remove from Watch List");
             }else if(show.getWatched().equals("true")){
@@ -92,25 +106,32 @@ public class ShowDetailsFragment extends Fragment {
             }
 
 
+            //start a json object request
             final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
 
+                                //get the genre id, status and network id for the show
                                     genreId = db.getGenrebyName(response.getJSONArray("genres").getString(0)).getId();
                                     status = response.getString("status");
-                                    //TODO Decide whether to keep this in
+
                                     networkId = db.getNetworkByName(response.getJSONObject("network").getString("name")).getId();
 
-                                    moreInfo.setText(db.getGenre(genreId).getGenreName() +
-                                            "\n" + db.getNetwork(networkId).getNetworkName() +
-                                            "\n" + status +
-                                            "\n" + "IMDB id: " + show.getImdbID() +
-                                            "\n" + show.getDay() +
-                                            "\n" + show.getTime());
+                                    //set the info into a text field
+
+                                    moreInfo3.setText(status);
+                                    moreInfo4.setText(show.getDay());
+                                    moreInfo5.setText(show.getTime());
+                                    moreInfo.setText(db.getGenre(genreId).getGenreName());
+                                    moreInfo2.setText(db.getNetwork(networkId).getNetworkName());
+
 
                             } catch (Exception e) {
+                                moreInfo3.setText(status);
+                                moreInfo4.setText(show.getDay());
+                                moreInfo5.setText(show.getTime());
                                 e.printStackTrace();
                             }
                         }
@@ -122,17 +143,20 @@ public class ShowDetailsFragment extends Fragment {
             });
             queue.add(request);
 
+            //if the show does not equal null
             if(show != null){
 
+                //set info and image
                 title.setText(show.getTitle());
                 description.setText(show.getSummary());
-                Picasso.get().load(show.getCover()).resize(210, 295).centerCrop().placeholder(R.drawable.ic_menu_camera).error(R.drawable.ic_contact_phone_black_24dp).into(imageView);
+                Picasso.get().load(show.getCover()).resize(310, 400).centerCrop().placeholder(R.drawable.ic_menu_camera).error(R.drawable.ic_contact_phone_black_24dp).into(imageView);
 
             }
             watchButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
+                    //depending on the state of the show in the database use alert dialog boxes to change its status
                     if(show.getWatched().equals("false")){
                         new AlertDialog.Builder(context)
                                 .setTitle("Remove From Watch List")
@@ -172,6 +196,7 @@ public class ShowDetailsFragment extends Fragment {
                 }
             });
 
+            //same as above but with buttons
             watchedButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -226,6 +251,19 @@ public class ShowDetailsFragment extends Fragment {
                     }
                 }
             });
+
+            //when the imdb button is clicked take the user to the imdb page
+            if(show.getImdbID() != null){
+                imdbButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+                        intent.putExtra(SearchManager.QUERY, "http://imdb.com/title/"+show.getImdbID());
+                        startActivity(intent);
+                    }
+                });
+            }
+
         }
 
 

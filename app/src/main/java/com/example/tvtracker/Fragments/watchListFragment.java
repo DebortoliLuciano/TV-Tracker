@@ -21,6 +21,12 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
+ *
+ */
+
+/**
+ * @author Luciano DeBortoli
+ *
  */
 public class watchListFragment extends Fragment {
 
@@ -36,6 +42,7 @@ public class watchListFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_watch_list, container, false);
 
+        //get context and the shows table and assign it to the recycler view
         Context context = this.getContext();
         DBHandler db = new DBHandler(getContext());
         ArrayList<Show> shows = db.getWatchedShows("false");

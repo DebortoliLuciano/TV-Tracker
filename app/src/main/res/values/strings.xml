@@ -22,18 +22,35 @@
     <string name="social_media_button">Check Out Our Youtube</string>
 
     <!-- viewpager body text (not needed)-->
-<!--    <string name="vp_item_home">Home is basically our search screen.\nYou can enter in the search bar and relevant results will be returned.\n-->
-<!--        You can press the star icon to mark shows that you wan to watch.</string>-->
-<!--    <string name="vp_item_watchList">Shows starred will end up here in convenient list form.\nClicking on a show will bring up the details page.\nYou will find extended descriptions and buttons to remove or mark as watched.</string>-->
-<!--    <string name="vp_item_watchedList">Buttons marked as watched will end up here.\n Additionally these shows will be flagged in search as watched.</string>-->
-<!--    <string name="vp_item_contact">Here you will find the various ways to contact us.\nIncluding: Phone, Email, SMS/text/message.\nAlso contains a link to our Youtube.</string>-->
-
+    <!--    <string name="vp_item_home">Home is basically our search screen.\nYou can enter in the search bar and relevant results will be returned.\n-->
+    <!--        You can press the star icon to mark shows that you wan to watch.</string>-->
+    <!--    <string name="vp_item_watchList">Shows starred will end up here in convenient list form.\nClicking on a show will bring up the details page.\nYou will find extended descriptions and buttons to remove or mark as watched.</string>-->
+    <!--    <string name="vp_item_watchedList">Buttons marked as watched will end up here.\n Additionally these shows will be flagged in search as watched.</string>-->
+    <!--    <string name="vp_item_contact">Here you will find the various ways to contact us.\nIncluding: Phone, Email, SMS/text/message.\nAlso contains a link to our Youtube.</string>-->
 
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="watchListButton">Add to Watch List</string>
     <string name="watchedListButton">Add to Watched List</string>
+    <string name="imdbButton">IMDB Page</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="na_string">N/A</string>
 
 
 </resources>
