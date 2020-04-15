@@ -49,7 +49,7 @@ Tested on Pixel 2
 | NAME | ACCOUNT | EMAIL |
 | ---- | ------- | ----- |
 | Luciano DeBortoli | https://github.com/DebortoliLuciano | luciano.debortoli31@stclairconnect.ca |
-| Saad Amjad | https://github.com/SaadMAmjad | TBA |
+| Saad Amjad | https://github.com/SaadMAmjad | w0730752@myscc.ca |
 
 ## Liscense
 
